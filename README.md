@@ -11,9 +11,11 @@ Projekt w Pythonie do generowania diagramów/struktur SQL. Repozytorium powstał
 1. Utwórz i aktywuj wirtualne środowisko:
 
    ```bash
-   python3.12 -m venv .venv
+   python3 -m venv .venv
    source .venv/bin/activate
    ```
+
+   Upewnij się, że polecenie `python3` wskazuje na wersję 3.12 (np. `python3 --version`).
 
    Na Windows:
 
@@ -21,6 +23,8 @@ Projekt w Pythonie do generowania diagramów/struktur SQL. Repozytorium powstał
    py -3.12 -m venv .venv
    .venv\Scripts\activate
    ```
+
+   Upewnij się, że `py -3.12` wskazuje na wersję 3.12 (np. `py -3.12 --version`).
 
 2. Zainstaluj zależności z pliku `requirements.txt`:
 
