@@ -1,3 +1,41 @@
-# SQL Generator From Diagram Python
-<b>PL:</b> To repozytorium zawiera projekt w języku Python stworzony podczas moich studiów na Politechnice Świętokrzyskiej.<br/> 
-<b>ENG:</b> This repository contains project in Python language that was created during my studies at the Kielce University of Technology.
+# SQL Modeler
+
+Projekt w Pythonie do generowania diagramów/struktur SQL. Repozytorium powstało podczas studiów na Politechnice Świętokrzyskiej.
+
+## Wymagania
+
+- Python 3.12
+
+## Instalacja i uruchomienie
+
+1. Utwórz i aktywuj wirtualne środowisko:
+
+   ```bash
+   python3.12 -m venv .venv
+   source .venv/bin/activate
+   ```
+
+   Na Windows:
+
+   ```powershell
+   py -3.12 -m venv .venv
+   .venv\Scripts\activate
+   ```
+
+2. Zainstaluj zależności z pliku `requirements.txt`:
+
+   ```bash
+   python -m pip install -r requirements.txt
+   ```
+
+3. Uruchom aplikację:
+
+   ```bash
+   python main.py
+   ```
+
+## Testy (opcjonalnie)
+
+```bash
+python -m unittest discover tests/
+```
