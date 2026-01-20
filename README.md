@@ -29,17 +29,17 @@ Projekt w Pythonie do generowania diagramów/struktur SQL. Repozytorium powstał
 2. Zainstaluj zależności z pliku `requirements.txt` (plik znajduje się w katalogu głównym repozytorium):
 
    ```bash
-   python -m pip install -r requirements.txt
+   python3 -m pip install -r requirements.txt
    ```
 
 3. Uruchom aplikację:
 
    ```bash
-   python main.py
+   python3 main.py
    ```
 
 ## Testy (opcjonalnie)
 
 ```bash
-python -m unittest discover tests/
+python3 -m unittest discover tests/
 ```
