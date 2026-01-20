@@ -4,18 +4,18 @@ Projekt w Pythonie do generowania diagramów/struktur SQL. Repozytorium powstał
 
 ## Wymagania
 
-- Python 3.12 (jeśli nie masz zainstalowanej wersji 3.12, pobierz ją z https://www.python.org/downloads/ lub użyj menedżera pakietów systemu)
+- Python 3.12 (wymagana wersja; jeśli nie masz 3.12, pobierz ją z https://www.python.org/downloads/ lub użyj menedżera pakietów systemu)
 
 ## Instalacja i uruchomienie
 
-1. Utwórz i aktywuj wirtualne środowisko:
+1. Utwórz i aktywuj wirtualne środowisko (użyj Pythona 3.12):
 
    ```bash
-   python3 -m venv .venv
+   python3.12 -m venv .venv
    source .venv/bin/activate
    ```
 
-   Upewnij się, że polecenie `python3` wskazuje na wersję 3.12 (np. `python3 --version`).
+   Jeśli `python3.12` nie jest dostępny, użyj `python3` wskazującego na 3.12 (np. `python3 --version`) lub zainstaluj Pythona 3.12.
 
    Na Windows:
 
@@ -29,17 +29,17 @@ Projekt w Pythonie do generowania diagramów/struktur SQL. Repozytorium powstał
 2. Zainstaluj zależności z pliku `requirements.txt` (plik znajduje się w katalogu głównym repozytorium):
 
    ```bash
-   python3 -m pip install -r requirements.txt
+   python -m pip install -r requirements.txt
    ```
 
 3. Uruchom aplikację:
 
    ```bash
-   python3 main.py
+   python main.py
    ```
 
 ## Testy (opcjonalnie)
 
 ```bash
-python3 -m unittest discover tests/
+python -m unittest discover tests/
 ```
