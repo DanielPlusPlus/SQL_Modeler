@@ -4,7 +4,7 @@ Projekt w Pythonie do generowania diagramów/struktur SQL. Repozytorium powstał
 
 ## Wymagania
 
-- Python 3.12
+- Python 3.12 (jeśli nie masz zainstalowanej wersji 3.12, pobierz ją z https://www.python.org/downloads/ lub użyj menedżera pakietów systemu)
 
 ## Instalacja i uruchomienie
 
@@ -26,7 +26,7 @@ Projekt w Pythonie do generowania diagramów/struktur SQL. Repozytorium powstał
 
    Upewnij się, że `py -3.12` wskazuje na wersję 3.12 (np. `py -3.12 --version`).
 
-2. Zainstaluj zależności z pliku `requirements.txt`:
+2. Zainstaluj zależności z pliku `requirements.txt` (plik znajduje się w katalogu głównym repozytorium):
 
    ```bash
    python -m pip install -r requirements.txt
