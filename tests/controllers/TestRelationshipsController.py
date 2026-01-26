@@ -167,7 +167,7 @@ class TestRelationshipsController(unittest.TestCase):
     @patch("app.controllers.RelationshipsController.ErrorDialogView")
     def testAddNNRelationship_correctTypes_addsRelationship(self, MockErrorDialogView):
         first_table, second_table, _, _ = self._prepare_tables_and_columns_models(
-            first_fk_ok=True, second_fk_ok=True
+            first_fk_ok=False, second_fk_ok=False
         )
 
         self.controller.add_n_n_Relationship()

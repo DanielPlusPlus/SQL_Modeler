@@ -17,7 +17,7 @@ class ToolBarController:
         self.__MenuBarController.selectCreate_1_1_RelTool()
 
     def __selectCreate_1_n_RelTool(self):
-        self.__MenuBarController.__selectCreate_1_n_RelTool()
+        self.__MenuBarController.selectCreate_1_n_RelTool()
 
     def __selectCreate_n_n_RelTool(self):
         self.__MenuBarController.selectCreate_n_n_RelTool()

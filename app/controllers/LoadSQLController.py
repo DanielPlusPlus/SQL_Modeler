@@ -13,13 +13,14 @@ class LoadSQLController:
     def __init__(self, ParentWindow, MainWindowController, TablesModel, RelationshipsModel, InheritancesModel):
         self.__ParentWindow = ParentWindow
         self.__MainWindowController = MainWindowController
-        self.__TablesModel: TablesModel = TablesModel
+        self.__TablesModel = TablesModel
         self.__RelationshipsModel = RelationshipsModel
         self.__InheritancesModel = InheritancesModel
         self.__auto_place_count = 0
 
         self.__tables_by_name = {}
         self.__types_by_name = {}
+        self.__fk_constraints = {}
 
     def __next_table_position(self, width=180, height=120, padding=30):
         n = self.__auto_place_count
@@ -34,6 +35,7 @@ class LoadSQLController:
     def parseSQLCode(self, sqlCode: str):
         self.__tables_by_name.clear()
         self.__types_by_name.clear()
+        self.__fk_constraints.clear()
 
         statements = [s.strip() for s in sqlCode.split(';') if s.strip()]
         for statement in statements:
@@ -46,6 +48,7 @@ class LoadSQLController:
                 self.__parseRelationshipSQL(statement + ';')
 
         self.__buildInheritanceModelsFromTypes()
+        self.__buildRelationshipsFromCreateTableFKs()
 
     def __parseCreateTableSQL(self, sql: str):
         m_table = re.search(r'CREATE\s+TABLE\s+"([^"]+)"', sql, re.IGNORECASE | re.DOTALL)
@@ -56,18 +59,18 @@ class LoadSQLController:
         m_of_type = re.search(r'CREATE\s+TABLE\s+"[^"]+"\s+OF\s+"([^"]+)"', sql, re.IGNORECASE | re.DOTALL)
         of_type_name = m_of_type.group(1) if m_of_type else None
 
-        m_body = re.search(r'CREATE\s+TABLE\s+".+?"(?:\s+OF\s+".+?")?\s*\((.*)\)\s*;', sql,
-                           re.IGNORECASE | re.DOTALL)
+        m_body = re.search(
+            r'CREATE\s+TABLE\s+".+?"(?:\s+OF\s+".+?")?\s*\((.*)\)\s*;',
+            sql,
+            re.IGNORECASE | re.DOTALL
+        )
         body = m_body.group(1) if m_body else ""
 
-
         raw_lines = [l.strip() for l in body.split(',') if l.strip()]
-
 
         x, y = self.__next_table_position()
         table_model = TableModel(x + 100, y + 100, 100, 20, 5, self.__TablesModel.tableNumber)
         table_model.editTableName(table_name)
-
 
         self.__TablesModel.tables.append(table_model)
         self.__TablesModel.tableNumber += 1
@@ -75,23 +78,42 @@ class LoadSQLController:
 
         cols_model = table_model.getTableColumnsModel()
 
-
         pk_columns = set()
         unique_columns = set()
+        fk_list = []
 
         for line in raw_lines:
             upper = line.upper()
+
             if upper.startswith("CONSTRAINT") or upper.startswith("PRIMARY KEY") or upper.startswith("UNIQUE"):
                 m_pk = re.search(r'PRIMARY\s+KEY\s*\(([^)]+)\)', line, re.IGNORECASE)
                 if m_pk:
                     cols = [c.strip().strip('"') for c in m_pk.group(1).split(',')]
                     for c in cols:
                         pk_columns.add(c)
+
                 m_uniq = re.search(r'UNIQUE\s*\(([^)]+)\)', line, re.IGNORECASE)
                 if m_uniq:
                     cols = [c.strip().strip('"') for c in m_uniq.group(1).split(',')]
                     for c in cols:
                         unique_columns.add(c)
+
+                m_fk = re.search(
+                    r'FOREIGN\s+KEY\s*\("([^"]+)"\)\s+REFERENCES\s+"([^"]+)"\s*\("([^"]+)"\)',
+                    line,
+                    re.IGNORECASE
+                )
+                if m_fk:
+                    local_col = m_fk.group(1)
+                    ref_table = m_fk.group(2)
+                    ref_col = m_fk.group(3)
+                    fk_list.append(
+                        {
+                            "local_col": local_col,
+                            "ref_table": ref_table,
+                            "ref_col": ref_col,
+                        }
+                    )
                 continue
 
             m_col = re.match(
@@ -114,7 +136,6 @@ class LoadSQLController:
             not_null = bool(re.search(r'\bNOT\s+NULL\b', rest, re.IGNORECASE))
             unique_inline = bool(re.search(r'\bUNIQUE\b', rest, re.IGNORECASE))
 
-
             cols_model.addColumn(
                 columnName=col_name,
                 dataType=data_type,
@@ -122,8 +143,11 @@ class LoadSQLController:
                 unique=unique_inline,
                 notNull=not_null,
                 pk=False,
-                fk=False
+                fk=False,
             )
+
+        if fk_list:
+            self.__fk_constraints[table_name] = fk_list
 
         for column in cols_model.getColumns():
             name = column["columnName"]
@@ -309,6 +333,84 @@ class LoadSQLController:
             rel_type
         )
         self.__RelationshipsModel.addRelationship(relationship_model)
+
+    def __buildRelationshipsFromCreateTableFKs(self):
+        tables_to_remove = set()
+
+        for table_name, fk_list in self.__fk_constraints.items():
+            table_model = self.__tables_by_name.get(table_name)
+            if not table_model:
+                continue
+
+            if len(fk_list) == 2:
+                fk1, fk2 = fk_list
+                if fk1["ref_table"] != fk2["ref_table"]:
+                    first_table = self.__tables_by_name.get(fk1["ref_table"])
+                    second_table = self.__tables_by_name.get(fk2["ref_table"])
+                    if first_table and second_table:
+                        first_cols_model = first_table.getTableColumnsModel()
+                        second_cols_model = second_table.getTableColumnsModel()
+
+                        for col in first_cols_model.getColumns():
+                            if col["columnName"] == fk1["ref_col"]:
+                                col["fk"] = True
+                                break
+
+                        for col in second_cols_model.getColumns():
+                            if col["columnName"] == fk2["ref_col"]:
+                                col["fk"] = True
+                                break
+
+                        rel = RelationshipModel(
+                            first_table,
+                            second_table,
+                            fk1["ref_col"],
+                            fk2["ref_col"],
+                            RelationshipsEnum.REL_n_n
+                        )
+                        self.__RelationshipsModel.addRelationship(rel)
+
+                        tables_to_remove.add(table_name)
+                        continue
+
+            for fk in fk_list:
+                first_table = self.__tables_by_name.get(fk["ref_table"])
+                second_table = table_model
+                if not first_table or not second_table:
+                    continue
+
+                second_column_name = fk["local_col"]
+                first_column_name = fk["ref_col"]
+
+                cols_model = second_table.getTableColumnsModel()
+                for col in cols_model.getColumns():
+                    if col["columnName"] == second_column_name:
+                        if col.get("pk") or col.get("unique"):
+                            break
+                        col["fk"] = True
+                        break
+
+                if self.__isOneToOneRelationship(first_table, second_table, first_column_name, second_column_name):
+                    rel_type = RelationshipsEnum.REL_1_1
+                else:
+                    rel_type = RelationshipsEnum.REL_1_n
+
+                rel_model = RelationshipModel(
+                    first_table,
+                    second_table,
+                    first_column_name,
+                    second_column_name,
+                    rel_type
+                )
+                self.__RelationshipsModel.addRelationship(rel_model)
+
+        if tables_to_remove:
+            self.__TablesModel.tables = [
+                t for t in self.__TablesModel.tables
+                if t.getTableName() not in tables_to_remove
+            ]
+            for name in tables_to_remove:
+                self.__tables_by_name.pop(name, None)
 
     def __isOneToOneRelationship(self, firstTable, secondTable, firstColumnName, secondColumnName):
         cols = secondTable.getTableColumnsModel().getColumns()
