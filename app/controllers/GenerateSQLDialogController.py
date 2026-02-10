@@ -78,10 +78,10 @@ class GenerateSQLDialogController:
 
             executionResult = OracleDatabaseControl.executeSQLCode(sqlCode)
 
-            executionSQLDialog = ExecutionSQLDialogView(self.__ParentWindow)
-            executionSQLDialog.setupUI(executionResult)
-            executionSQLControl = ExecutionSQLDialogController(executionSQLDialog)
-            executionSQLDialog.displayDialog()
+            ExecutionSQLDialog = ExecutionSQLDialogView(self.__ParentWindow)
+            ExecutionSQLDialog.setupUI(executionResult)
+            ExecutionSQLControl = ExecutionSQLDialogController(ExecutionSQLDialog)
+            ExecutionSQLDialog.displayDialog()
 
     def __selectCancel(self):
         self.__GenerateSQLDialogView.reject()

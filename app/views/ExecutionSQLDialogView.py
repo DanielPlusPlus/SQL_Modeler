@@ -8,9 +8,9 @@ class ExecutionSQLDialogView(QDialog):
         super().__init__(ParentWindow)
 
     def setupUI(self, executionResult):
-        self.setObjectName("ExecuteSQLDialog")
+        self.setObjectName(u"ExecuteSQLDialog")
         self.resize(600, 400)
-        self.setWindowTitle("Execute SQL Code")
+        self.setWindowTitle(u"Execute SQL Code")
 
         self.__gridLayout = QGridLayout(self)
 
@@ -21,12 +21,12 @@ class ExecutionSQLDialogView(QDialog):
         self.__gridLayout.addLayout(self.__horizontalLayout, 0, 0, 1, 1)
 
         self.__horizontalLayout_2 = QHBoxLayout()
-        self.__ExecutionResultTextEdit = QTextEdit(self)
+        self.__executionResultTextEdit = QTextEdit(self)
         font = QFont("Courier", 10)
-        self.__ExecutionResultTextEdit.setFont(font)
-        self.__ExecutionResultTextEdit.setReadOnly(True)
-        self.__ExecutionResultTextEdit.setPlainText(executionResult)
-        self.__horizontalLayout_2.addWidget(self.__ExecutionResultTextEdit)
+        self.__executionResultTextEdit.setFont(font)
+        self.__executionResultTextEdit.setReadOnly(True)
+        self.__executionResultTextEdit.setPlainText(executionResult)
+        self.__horizontalLayout_2.addWidget(self.__executionResultTextEdit)
         self.__gridLayout.addLayout(self.__horizontalLayout_2, 1, 0, 1, 1)
 
         self.__horizontalLayout_3 = QHBoxLayout()
@@ -36,8 +36,8 @@ class ExecutionSQLDialogView(QDialog):
         self.__pleceholderWidget = QWidget(self)
         self.cancelButton = QPushButton(u"Cancel", self)
         self.okButton = QPushButton(u"OK", self)
-        self.__horizontalLayout_5.addWidget(self.__pleceholderWidget)
         self.__horizontalLayout_4.addWidget(self.__pleceholderWidget)
+        self.__horizontalLayout_5.addWidget(self.__pleceholderWidget)
         self.__horizontalLayout_6.addWidget(self.cancelButton)
         self.__horizontalLayout_6.addWidget(self.okButton)
         self.__horizontalLayout_3.addLayout(self.__horizontalLayout_5)

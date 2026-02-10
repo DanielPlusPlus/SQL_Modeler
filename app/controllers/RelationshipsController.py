@@ -3,6 +3,7 @@ from app.views.ConfirmationDialogView import ConfirmationDialogView
 from app.views.ErrorDialogView import ErrorDialogView
 from app.views.RelationshipContextMenuView import RelationshipContextMenuView
 from app.controllers.ConnectionsController import ConnectionsController
+from app.controllers.ColumnSelectionDialogController import ColumnSelectionDialogController
 from app.controllers.RelationshipContextMenuController import RelationshipContextMenuController
 from app.enums.RelationshipContextMenuEnum import RelationshipContextMenuEnum
 
@@ -42,7 +43,10 @@ class RelationshipsController(ConnectionsController):
 
     def __displayColumnSelectionDialog(self, obtainedTableColumns):
         ColumnSelectionDialog = ColumnSelectionDialogView(self._ParentWindow, obtainedTableColumns)
-        return ColumnSelectionDialog.displayDialog()
+        ColumnSelectionDialog.setupUI()
+        ColumnSelectionDialogControl = ColumnSelectionDialogController(ColumnSelectionDialog)
+        ColumnSelectionDialog.displayDialog()
+        return ColumnSelectionDialogControl.getSelectedColumnName()
 
     def __setForeignKeys(self):
         FirstTableColumnsModel = self._FirstClickedTable.getTableColumnsModel()
