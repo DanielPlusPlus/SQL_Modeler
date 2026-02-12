@@ -3,7 +3,7 @@ import unittest
 
 from PySide6.QtWidgets import QApplication, QLineEdit, QPushButton
 
-from app.views.OracleConnectionDialogView import OracleConnectionDialogView
+from app.views.OracleConnectionParamsDialogView import OracleConnectionDialogView
 
 app = QApplication.instance() or QApplication(sys.argv)
 

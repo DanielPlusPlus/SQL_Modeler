@@ -73,7 +73,7 @@ class EditTableDialogController:
         if newName == self.__ObtainedTable.getTableName():
             return True
 
-        if newName == "":
+        if not newName:
             dialogText = f"Table Name is Empty"
         elif self.__TablesController.checkTableNameUnique(newName):
             self.__ObtainedTable.editTableName(newName)

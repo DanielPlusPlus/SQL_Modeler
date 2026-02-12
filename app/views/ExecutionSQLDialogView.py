@@ -10,7 +10,7 @@ class ExecutionSQLDialogView(QDialog):
     def setupUI(self, executionResult):
         self.setObjectName(u"ExecuteSQLDialog")
         self.resize(600, 400)
-        self.setWindowTitle(u"Execute SQL Code")
+        self.setWindowTitle(u"SQL Code Execution")
 
         self.__gridLayout = QGridLayout(self)
 

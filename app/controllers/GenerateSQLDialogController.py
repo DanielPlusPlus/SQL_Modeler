@@ -3,8 +3,9 @@ from PySide6.QtWidgets import QFileDialog, QDialog
 
 from app.views.InfoDialogView import InfoDialogView
 from app.views.ErrorDialogView import ErrorDialogView
+from app.views.OracleConnectionParamsDialogView import OracleConnectionParamsDialogView
 from app.views.ExecutionSQLDialogView import ExecutionSQLDialogView
-from app.views.OracleConnectionDialogView import OracleConnectionDialogView
+from app.controllers.OracleConnectionParamsDialogController import OracleConnectionParamsDialogController
 from app.controllers.OracleDatabaseController import OracleDatabaseController
 from app.controllers.ExecutionSQLDialogController import ExecutionSQLDialogController
 
@@ -55,9 +56,12 @@ class GenerateSQLDialogController:
                 ErrorDialog.displayDialog()
 
     def __selectTestCode(self):
-        connectionDialog = OracleConnectionDialogView(self.__ParentWindow)
-        if connectionDialog.exec() == QDialog.Accepted:
-            params = connectionDialog.getConnectionParams()
+        OracleConnectionParamsDialog = OracleConnectionParamsDialogView(self.__ParentWindow)
+        OracleConnectionParamsDialog.setupUI()
+        OracleConnectionParamsControl = OracleConnectionParamsDialogController(OracleConnectionParamsDialog)
+        if OracleConnectionParamsDialog.displayDialog() == QDialog.Accepted:
+            params = OracleConnectionParamsControl.getConnectionParams()
+            sqlCode = self.__GenerateSQLDialogView.SQLCodeTextEdit.toPlainText()
 
             OracleDatabaseControl = OracleDatabaseController(
                 params["username"],
@@ -66,8 +70,6 @@ class GenerateSQLDialogController:
                 params["port"],
                 params["serviceName"]
             )
-
-            sqlCode = self.__GenerateSQLDialogView.SQLCodeTextEdit.toPlainText()
 
             if not sqlCode.strip():
                 dialogTitle = "ERROR"

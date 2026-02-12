@@ -1,3 +1,5 @@
+from PySide6.QtWidgets import QDialog
+
 from app.views.ColumnSelectionDialogView import ColumnSelectionDialogView
 from app.views.ConfirmationDialogView import ConfirmationDialogView
 from app.views.ErrorDialogView import ErrorDialogView
@@ -45,8 +47,10 @@ class RelationshipsController(ConnectionsController):
         ColumnSelectionDialog = ColumnSelectionDialogView(self._ParentWindow, obtainedTableColumns)
         ColumnSelectionDialog.setupUI()
         ColumnSelectionDialogControl = ColumnSelectionDialogController(ColumnSelectionDialog)
-        ColumnSelectionDialog.displayDialog()
-        return ColumnSelectionDialogControl.getSelectedColumnName()
+        if ColumnSelectionDialog.displayDialog() == QDialog.Accepted:
+            return ColumnSelectionDialogControl.getSelectedColumnName()
+        else:
+            return None
 
     def __setForeignKeys(self):
         FirstTableColumnsModel = self._FirstClickedTable.getTableColumnsModel()

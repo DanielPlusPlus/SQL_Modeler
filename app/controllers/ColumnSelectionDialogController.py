@@ -1,3 +1,6 @@
+from app.views.ErrorDialogView import ErrorDialogView
+
+
 class ColumnSelectionDialogController:
     def __init__(self, ColumnSelectionDialogView):
         self.__ColumnSelectionDialogView = ColumnSelectionDialogView
@@ -10,7 +13,13 @@ class ColumnSelectionDialogController:
 
     def __selectOK(self):
         self.__selectedColumnName = self.__ColumnSelectionDialogView.columnSelectionComboBox.currentText()
-        self.__ColumnSelectionDialogView.accept()
+        if self.__selectedColumnName:
+            self.__ColumnSelectionDialogView.accept()
+        else:
+            dialogTitle = "ERROR"
+            dialogText = f"Column Not Selected"
+            ErrorDialog = ErrorDialogView(self.__ColumnSelectionDialogView, dialogTitle, dialogText)
+            ErrorDialog.displayDialog()
 
     def getSelectedColumnName(self):
         return self.__selectedColumnName or None
