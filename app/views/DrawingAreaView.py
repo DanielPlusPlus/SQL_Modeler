@@ -5,17 +5,22 @@ from typing import override
 class DrawingAreaView(QWidget):
     def __init__(self, DrawingAreaController):
         super().__init__()
-        self.setMinimumSize(3840, 2160)
+        # do modelu
+        self.__minimumWidth = 400
+        self.__minimumHeight = 400
         self.__DrawingAreaController = DrawingAreaController
-        self.__TablesModel = None
-        self.__TableController = None
+        self.setMinimumSize(self.__minimumWidth, self.__minimumHeight)
         self.setMouseTracking(True)
+        self.scale_factor = 1.0
 
     def setupUI(self):
         self.setObjectName(u"DrawingArea")
 
-    def setTablesModel(self, TablesModel):
-        self.__TablesModel = TablesModel
+    def getMinimumWidth(self):
+        return self.__minimumWidth
+
+    def getMinimumHeight(self):
+        return self.__minimumHeight
 
     @override
     def mouseMoveEvent(self, event):
@@ -30,3 +35,4 @@ class DrawingAreaView(QWidget):
     @override
     def paintEvent(self, event):
         self.__DrawingAreaController.handlePaintEvent()
+

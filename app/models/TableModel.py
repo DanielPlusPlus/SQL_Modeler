@@ -35,6 +35,9 @@ class TableModel:
     def getRight(self):
         return self.__Rectangle.right()
 
+    def getBottom(self):
+        return self.__Rectangle.bottom()
+
     def getTableWidth(self):
         return self.__tableWidth
 

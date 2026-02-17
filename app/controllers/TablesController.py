@@ -69,6 +69,18 @@ class TablesController:
     def getTableInTransferStatus(self):
         return self.__isTableInTransfer
 
+    def getExtremeTableDimensions(self):
+        extremeRightDimension = 0
+        extremeBottomDimension = 0
+        tables = self.__TablesModel.getTables()
+        for ObtainedTable in tables:
+            extremeRightDimension = max(extremeRightDimension, ObtainedTable.getRight())
+            extremeBottomDimension = max(extremeBottomDimension, ObtainedTable.getBottom())
+        return {
+            "extremeRightDimension": extremeRightDimension,
+            "extremeBottomDimension": extremeBottomDimension
+        }
+
     def displayTableContextMenu(self, cursorPosition, globalCursorPosition):
         ObtainedTable = self.__TablesModel.getTableFromPosition(cursorPosition)
         if ObtainedTable is not None:

@@ -64,7 +64,7 @@ class MainWindow(QMainWindow):
         self.__DrawingAreaView = DrawingAreaView(self.__DrawingAreaController)
         self.__ScrollAreaView.setupUI(self.__DrawingAreaView)
         self.__DrawingAreaView.setupUI()
-        self.__MainWindowView.addCentralWidget(self.__ScrollAreaView)
+        self.__MainWindowController.setCentralWidget(self.__ScrollAreaView)
         self.__TablesView = TablesView(self.__TablesModel, self.__DrawingAreaView)
         self.__RelationshipsView = RelationshipsView(self.__RelationshipsModel, self.__DrawingAreaView)
         self.__InheritancesView = InheritancesView(self.__InheritancesModel, self.__DrawingAreaView)
@@ -84,9 +84,6 @@ class MainWindow(QMainWindow):
         self.__DrawingAreaController.setTablesController(self.__TablesController)
         self.__DrawingAreaController.setRelationshipsController(self.__RelationshipsController)
         self.__DrawingAreaController.setInheritancesController(self.__InheritancesController)
-
-        # views
-        self.__DrawingAreaView.setTablesModel(self.__TablesModel)
 
     @override
     def closeEvent(self, event):

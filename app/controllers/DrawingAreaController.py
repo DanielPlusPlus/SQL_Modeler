@@ -44,6 +44,7 @@ class DrawingAreaController:
             if self.__MenuBarController.getCreateTableToolStatus():
                 self.__TablesController.addTable(self.__cursorPosition)
                 self.__MenuBarController.unselectCreateTableTool()
+                self.__updateMinimumSize()
 
             elif (self.__MenuBarController.getCreate_1_1_RelToolStatus()
                   is ConnectionsStatusEnum.IN_MOTION_BEFORE_CLICK):
@@ -101,6 +102,7 @@ class DrawingAreaController:
 
             elif self.__TablesController.getTableInTransferStatus():
                 self.__TablesController.unselectTableInTransfer(self.__cursorPosition)
+                self.__updateMinimumSize()
             elif self.__TablesController.getContextMenuAtWorkStatus():
                 self.__TablesController.unselectContextMenuAtWork()
             elif self.__RelationshipsController.getContextMenuAtWorkStatus():
@@ -174,6 +176,14 @@ class DrawingAreaController:
         self.__TablesController.selectDrawTables()
         self.__RelationshipsController.selectDrawRelationships()
         self.__InheritancesController.selectDrawInheritances()
+
+    def __updateMinimumSize(self):
+        extremeTableDimensions = self.__TablesController.getExtremeTableDimensions()
+        minimumWidth = max(self.__DrawingAreaView.getMinimumWidth(),
+                           extremeTableDimensions["extremeRightDimension"] + 50)
+        minimumHeight = max(self.__DrawingAreaView.getMinimumHeight(),
+                            extremeTableDimensions["extremeBottomDimension"] + 50)
+        self.__DrawingAreaView.setMinimumSize(minimumWidth, minimumHeight)
 
     def updateView(self):
         self.__DrawingAreaView.update()
