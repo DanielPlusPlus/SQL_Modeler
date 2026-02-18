@@ -11,8 +11,8 @@ class MainWindowController:
         message = "Current mouse position: x - " + str(position.x()) + ", y - " + str(position.y())
         self.__MainWindowView.updateStatusBar(message)
 
-    def setCentralWidget(self, ScrollAreaView):
-        self.__MainWindowView.addCentralWidget(ScrollAreaView)
+    def setWidgetToCentralWidget(self, ScrollAreaView):
+        self.__MainWindowView.setWidgetToCentralWidget(ScrollAreaView)
 
     def selectCloseWithoutConfirmation(self):
         self.__allowCloseWithoutConfirmation = True

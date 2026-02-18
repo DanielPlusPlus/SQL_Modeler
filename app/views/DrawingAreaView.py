@@ -10,11 +10,13 @@ class DrawingAreaView(QWidget):
         self.__minimumHeight = 400
         self.__DrawingAreaController = DrawingAreaController
         self.setMinimumSize(self.__minimumWidth, self.__minimumHeight)
+        self.setMaximumSize(800, 600)
         self.setMouseTracking(True)
         self.scale_factor = 1.0
 
     def setupUI(self):
         self.setObjectName(u"DrawingArea")
+        self.setStyleSheet("background-color: red;")
 
     def getMinimumWidth(self):
         return self.__minimumWidth

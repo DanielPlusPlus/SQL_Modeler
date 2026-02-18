@@ -7,4 +7,5 @@ class ScrollAreaView(QScrollArea):
 
     def setupUI(self, DrawingAreaView):
         self.setWidget(DrawingAreaView)
+        print(DrawingAreaView.styleSheet())
         self.setWidgetResizable(True)
