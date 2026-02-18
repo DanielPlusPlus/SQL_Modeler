@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QWidget
+from PySide6.QtGui import Qt
 from typing import override
 
 
@@ -16,7 +17,8 @@ class DrawingAreaView(QWidget):
 
     def setupUI(self):
         self.setObjectName(u"DrawingArea")
-        self.setStyleSheet("background-color: red;")
+        self.setAttribute(Qt.WA_StyledBackground, True)
+        self.setStyleSheet("background-color: #e6e6e6;")
 
     def getMinimumWidth(self):
         return self.__minimumWidth

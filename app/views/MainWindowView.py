@@ -1,5 +1,5 @@
-from PySide6.QtCore import QCoreApplication, QMetaObject, QRect
-from PySide6.QtWidgets import QGridLayout, QHBoxLayout, QMenuBar, QStatusBar, QWidget
+from PySide6.QtCore import QCoreApplication
+from PySide6.QtWidgets import QGridLayout, QHBoxLayout, QStatusBar, QWidget
 
 
 class MainWindowView:
@@ -20,7 +20,6 @@ class MainWindowView:
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"SQL Generator From Diagram", None))
 
     def setWidgetToCentralWidget(self, widget):
-        # print(widget.widget().styleSheet())
         self.__horizontalLayout.addWidget(widget)
 
     def updateStatusBar(self, message):

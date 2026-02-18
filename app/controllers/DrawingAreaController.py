@@ -173,9 +173,9 @@ class DrawingAreaController:
             self.__RelationshipsController.selectDrawRelationshipBeingDrawn(self.__cursorPosition)
         elif self.__InheritancesController.getInheritanceBeingDrawnStatus():
             self.__InheritancesController.selectDrawInheritanceBeingDrawn(self.__cursorPosition)
-        self.__TablesController.selectDrawTables()
         self.__RelationshipsController.selectDrawRelationships()
         self.__InheritancesController.selectDrawInheritances()
+        self.__TablesController.selectDrawTables()
 
     def __updateMinimumSize(self):
         extremeTableDimensions = self.__TablesController.getExtremeTableDimensions()
