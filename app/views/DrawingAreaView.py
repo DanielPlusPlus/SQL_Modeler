@@ -13,7 +13,6 @@ class DrawingAreaView(QWidget):
         self.setMinimumSize(self.__minimumWidth, self.__minimumHeight)
         self.setMaximumSize(800, 600)
         self.setMouseTracking(True)
-        self.scale_factor = 1.0
 
     def setupUI(self):
         self.setObjectName(u"DrawingArea")
@@ -34,6 +33,11 @@ class DrawingAreaView(QWidget):
     @override
     def mousePressEvent(self, event):
         self.__DrawingAreaController.handleMousePress(event)
+        self.update()
+
+    @override
+    def wheelEvent(self, event):
+        self.__DrawingAreaController.handleWheelMove(event)
         self.update()
 
     @override

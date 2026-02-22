@@ -15,6 +15,7 @@ class DrawingAreaController:
         self.__TablesController = None
         self.__RelationshipsController = None
         self.__InheritancesController = None
+        self.__scaleFactor = 1.0
 
     def setDrawingAreaView(self, DrawingAreaView):
         self.__DrawingAreaView = DrawingAreaView
@@ -163,8 +164,22 @@ class DrawingAreaController:
                                                                                          globalCursorPosition)
                     if result is InheritanceContextMenuEnum.DELETE:
                         self.__InheritancesController.deleteInheritance(self.__cursorPosition)
+        elif event.button() == Qt.MiddleButton:
+            self.__scaleFactor = 1.0
+
+    def handleWheelMove(self, event):
+        delta = event.angleDelta().y()
+        if delta > 0:
+            self.__scaleFactor = min(2.0, round(self.__scaleFactor + 0.1, 1))
+        else:
+            self.__scaleFactor = max(0.1, round(self.__scaleFactor - 0.1, 1))
+
+        print(self.__scaleFactor)
 
     def handlePaintEvent(self):
+        self.__RelationshipsController.selectDrawRelationships()
+        self.__InheritancesController.selectDrawInheritances()
+        self.__TablesController.selectDrawTables()
         if self.__MenuBarController.getCreateTableToolStatus():
             self.__TablesController.selectDrawTempTable(self.__cursorPosition)
         elif self.__TablesController.getTableInTransferStatus():
@@ -173,9 +188,6 @@ class DrawingAreaController:
             self.__RelationshipsController.selectDrawRelationshipBeingDrawn(self.__cursorPosition)
         elif self.__InheritancesController.getInheritanceBeingDrawnStatus():
             self.__InheritancesController.selectDrawInheritanceBeingDrawn(self.__cursorPosition)
-        self.__RelationshipsController.selectDrawRelationships()
-        self.__InheritancesController.selectDrawInheritances()
-        self.__TablesController.selectDrawTables()
 
     def __updateMinimumSize(self):
         extremeTableDimensions = self.__TablesController.getExtremeTableDimensions()

@@ -26,7 +26,8 @@ class TablesModel:
         self.tables.remove(SelectedTable)
 
     def getTableFromPosition(self, position):
-        for ObtainedTable in self.tables:
+        for i in range(len(self.tables) - 1, -1, -1):
+            ObtainedTable = self.tables[i]
             if ObtainedTable.contains(QPoint(position.x(), position.y())):
                 return ObtainedTable
         return None

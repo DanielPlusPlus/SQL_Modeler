@@ -51,6 +51,8 @@ class TablesController:
         self.__TableInTransfer = self.__TablesModel.getTableFromPosition(cursorPosition)
         if self.__TableInTransfer is not None:
             self.__isTableInTransfer = True
+            self.__TablesModel.deleteSelectedTable(self.__TableInTransfer)
+            self.__TablesModel.addSelectedTable(self.__TableInTransfer)
 
     def unselectTableInTransfer(self, cursorPosition):
         self.__TableInTransfer.changeTablePosition(cursorPosition.x(), cursorPosition.y())
