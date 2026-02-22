@@ -15,9 +15,6 @@ class RelationshipsController(ConnectionsController):
         super().__init__(ParentWindow, TablesModel)
         self.__RelationshipsView = RelationshipsView
         self.__RelationshipsModel = RelationshipsModel
-        self.__RelationshipContextMenuView = RelationshipContextMenuView(ParentWindow)
-        self.__RelationshipContextMenuView.setupUI()
-        self.__RelationshipContextMenuController = RelationshipContextMenuController(self.__RelationshipContextMenuView)
         self.__firstSelectedColumnName = None
         self.__secondSelectedColumnName = None
         self.__isFirstSelectedColumnPK = False
@@ -132,9 +129,12 @@ class RelationshipsController(ConnectionsController):
         ObtainedRelationship = self.__RelationshipsModel.getRelationshipFromPosition(cursorPosition)
         if ObtainedRelationship is not None:
             self.__isContextMenuAtWork = True
-            self.__RelationshipContextMenuView.exec(globalCursorPosition)
-            if self.__RelationshipContextMenuController.getSelectDeleteRelationshipStatus():
-                self.__RelationshipContextMenuController.unselectDeleteRelationship()
+            RelationshipContextMenu = RelationshipContextMenuView(self._ParentWindow)
+            RelationshipContextMenu.setupUI()
+            RelationshipContextMenuControl = RelationshipContextMenuController(RelationshipContextMenu)
+            RelationshipContextMenu.display(globalCursorPosition)
+            if RelationshipContextMenuControl.getSelectDeleteRelationshipStatus():
+                RelationshipContextMenuControl.unselectDeleteRelationship()
                 self.__isContextMenuAtWork = False
                 return RelationshipContextMenuEnum.DELETE
             return RelationshipContextMenuEnum.NONE

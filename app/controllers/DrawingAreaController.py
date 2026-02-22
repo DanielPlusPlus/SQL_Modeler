@@ -147,8 +147,8 @@ class DrawingAreaController:
                 globalCursorPosition = self.__convertCursorPositionToGlobal(self.__cursorPosition)
                 result = self.__TablesController.displayTableContextMenu(self.__cursorPosition,
                                                                          globalCursorPosition)
-                if result is TableContextMenuEnum.COLLAPSE:
-                    self.__TablesController.collapseTable(self.__cursorPosition)
+                if result is TableContextMenuEnum.COLLAPSE_EXPAND:
+                    self.__TablesController.collapseExpandTable(self.__cursorPosition)
                 elif result is TableContextMenuEnum.EDIT:
                     self.__TablesController.editTable(self.__cursorPosition)
                 elif result is TableContextMenuEnum.DELETE:

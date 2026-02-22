@@ -10,9 +10,6 @@ class InheritancesController(ConnectionsController):
         super().__init__(ParentWindow, TablesModel)
         self.__InheritancesView = InheritanceView
         self.__InheritancesModel = InheritanceModel
-        self.__InheritanceContextMenuView = InheritanceContextMenuView(self._ParentWindow)
-        self.__InheritanceContextMenuView.setupUI()
-        self.__InheritanceContextMenuController = InheritanceContextMenuController(self.__InheritanceContextMenuView)
         self.__isInheritanceBeingDrawn = False
         self.__isContextMenuAtWork = False
 
@@ -48,12 +45,15 @@ class InheritancesController(ConnectionsController):
         self.__InheritancesView.drawInheritances()
 
     def displayInheritanceContextMenu(self, cursorPosition, globalCursorPosition):
-        ObtainedRelationship = self.__InheritancesModel.getInheritanceFromPosition(cursorPosition)
-        if ObtainedRelationship is not None:
+        ObtainedInheritance = self.__InheritancesModel.getInheritanceFromPosition(cursorPosition)
+        if ObtainedInheritance is not None:
             self.__isContextMenuAtWork = True
-            self.__InheritanceContextMenuView.exec(globalCursorPosition)
-            if self.__InheritanceContextMenuController.getSelectDeleteInheritanceStatus():
-                self.__InheritanceContextMenuController.unselectDeleteInheritance()
+            InheritanceContextMenu = InheritanceContextMenuView(self._ParentWindow)
+            InheritanceContextMenu.setupUI()
+            InheritanceContextMenuControl = InheritanceContextMenuController(InheritanceContextMenu)
+            InheritanceContextMenu.display(globalCursorPosition)
+            if InheritanceContextMenuControl.getSelectDeleteInheritanceStatus():
+                InheritanceContextMenuControl.unselectDeleteInheritance()
                 self.__isContextMenuAtWork = False
                 return InheritanceContextMenuEnum.DELETE
             return InheritanceContextMenuEnum.NONE

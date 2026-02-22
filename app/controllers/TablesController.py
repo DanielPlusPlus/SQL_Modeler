@@ -13,9 +13,6 @@ class TablesController:
         self.__TablesModel = TablesModel
         self.__RelationshipsController = RelationshipsController
         self.__InheritancesController = InheritancesController
-        self.__TableContextMenuView = TableContextMenuView(self.__ParentWindow)
-        self.__TableContextMenuView.setupUI()
-        self.__TableContextMenuController = TableContextMenuController(self.__TableContextMenuView)
         self.__TableInTransfer = None
         self.__isTableInTransfer = False
         self.__isContextMenuAtWork = False
@@ -34,7 +31,7 @@ class TablesController:
                 self.__RelationshipsController.deleteRelationshipByTable(ObtainedTable)
                 self.__InheritancesController.deleteInheritanceByTable(ObtainedTable)
 
-    def collapseTable(self, cursorPosition):
+    def collapseExpandTable(self, cursorPosition):
         ObtainedTable = self.__TablesModel.getTableFromPosition(cursorPosition)
         if ObtainedTable is not None:
             ObtainedTable.changeTableCollapseStatus()
@@ -87,17 +84,20 @@ class TablesController:
         ObtainedTable = self.__TablesModel.getTableFromPosition(cursorPosition)
         if ObtainedTable is not None:
             self.__isContextMenuAtWork = True
-            self.__TableContextMenuView.exec(globalCursorPosition)
-            if self.__TableContextMenuController.getSelectCollapseTableStatus():
-                self.__TableContextMenuController.unselectCollapseTable()
+            TableContextMenu = TableContextMenuView(self.__ParentWindow)
+            TableContextMenu.setupUI(ObtainedTable.getTableCollapseStatus())
+            TableContextMenuControl = TableContextMenuController(TableContextMenu)
+            TableContextMenu.display(globalCursorPosition)
+            if TableContextMenuControl.getSelectCollapseExpandTableStatus():
+                TableContextMenuControl.unselectCollapseExpandTable()
                 self.__isContextMenuAtWork = False
-                return TableContextMenuEnum.COLLAPSE
-            elif self.__TableContextMenuController.getSelectEditTableStatus():
-                self.__TableContextMenuController.unselectEditTable()
+                return TableContextMenuEnum.COLLAPSE_EXPAND
+            elif TableContextMenuControl.getSelectEditTableStatus():
+                TableContextMenuControl.unselectEditTable()
                 self.__isContextMenuAtWork = False
                 return TableContextMenuEnum.EDIT
-            elif self.__TableContextMenuController.getSelectDeleteTableStatus():
-                self.__TableContextMenuController.unselectDeleteTable()
+            elif TableContextMenuControl.getSelectDeleteTableStatus():
+                TableContextMenuControl.unselectDeleteTable()
                 self.__isContextMenuAtWork = False
                 return TableContextMenuEnum.DELETE
             return TableContextMenuEnum.NONE

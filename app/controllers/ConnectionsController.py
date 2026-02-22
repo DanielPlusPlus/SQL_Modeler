@@ -1,7 +1,7 @@
 class ConnectionsController:
     def __init__(self, ParentWindow, TablesModel):
-        self.__TablesModel = TablesModel
         self._ParentWindow = ParentWindow
+        self.__TablesModel = TablesModel
         self._FirstClickedTable = None
         self._SecondClickedTable = None
 

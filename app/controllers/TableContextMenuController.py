@@ -1,20 +1,20 @@
 class TableContextMenuController:
     def __init__(self, TableContextMenuView):
-        self.__isCollapseTableSelected = False
+        self.__isCollapseExpandTableSelected = False
         self.__isEditTableSelected = False
         self.__isDeleteTableSelected = False
-        TableContextMenuView.actionCollapseTable.triggered.connect(self.__selectCollapseTable)
+        TableContextMenuView.actionCollapseExpandTable.triggered.connect(self.__selectCollapseExpandTable)
         TableContextMenuView.actionEditTable.triggered.connect(self.__selectEditTable)
         TableContextMenuView.actionDeleteTable.triggered.connect(self.__selectDeleteTable)
 
-    def __selectCollapseTable(self):
-        self.__isCollapseTableSelected = True
+    def __selectCollapseExpandTable(self):
+        self.__isCollapseExpandTableSelected = True
 
-    def unselectCollapseTable(self):
-        self.__isCollapseTableSelected = False
+    def unselectCollapseExpandTable(self):
+        self.__isCollapseExpandTableSelected = False
 
-    def getSelectCollapseTableStatus(self):
-        return self.__isCollapseTableSelected
+    def getSelectCollapseExpandTableStatus(self):
+        return self.__isCollapseExpandTableSelected
 
     def __selectEditTable(self):
         self.__isEditTableSelected = True
