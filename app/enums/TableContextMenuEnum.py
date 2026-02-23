@@ -2,7 +2,8 @@ from enum import Enum
 
 
 class TableContextMenuEnum(Enum):
-    COLLAPSE_EXPAND = 1
-    EDIT = 2
-    DELETE = 3
-    NONE = 4
+    CHANGE_COLOR = 1
+    COLLAPSE_EXPAND = 2
+    EDIT = 3
+    DELETE = 4
+    NONE = 5

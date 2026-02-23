@@ -7,6 +7,7 @@ class TableContextMenuView(QMenu):
         super().__init__(ParentWindow)
 
     def setupUI(self, tableCollapseStatus):
+        self.actionChangeTableColor = QAction(u"Change Color", self)
         self.actionCollapseExpandTable = QAction(u"Collapse/Expand Table", self)
         if tableCollapseStatus:
             self.actionCollapseExpandTable.setText(u"Expand Table")
@@ -15,6 +16,7 @@ class TableContextMenuView(QMenu):
         self.actionEditTable = QAction(u"Edit Table", self)
         self.actionDeleteTable = QAction(u"Delete Table", self)
 
+        self.addAction(self.actionChangeTableColor)
         self.addAction(self.actionCollapseExpandTable)
         self.addAction(self.actionEditTable)
         self.addAction(self.actionDeleteTable)

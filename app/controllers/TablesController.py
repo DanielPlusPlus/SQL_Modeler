@@ -1,5 +1,8 @@
+from PySide6.QtWidgets import QDialog
 from app.views.ConfirmationDialogView import ConfirmationDialogView
 from app.views.TableContextMenuView import TableContextMenuView
+from app.views.ColorChangeDialogView import ColorChangeDialogView
+from app.controllers.ColorChangeDialogController import ColorChangeDialogController
 from app.views.EditTableDialogView import EditTableDialogView
 from app.controllers.TableContextMenuController import TableContextMenuController
 from app.controllers.EditTableDialogController import EditTableDialogController
@@ -30,6 +33,15 @@ class TablesController:
                 self.__TablesModel.deleteSelectedTable(ObtainedTable)
                 self.__RelationshipsController.deleteRelationshipByTable(ObtainedTable)
                 self.__InheritancesController.deleteInheritanceByTable(ObtainedTable)
+
+    def changeTableColor(self, cursorPosition):
+        ObtainedTable = self.__TablesModel.getTableFromPosition(cursorPosition)
+        if ObtainedTable is not None:
+            ColorChangeDialog = ColorChangeDialogView(self.__ParentWindow)
+            ColorChangeDialog.setupUi()
+            ColorChangeDialogControl = ColorChangeDialogController(ColorChangeDialog)
+            if ColorChangeDialog.displayDialog() == QDialog.Accepted:
+                ObtainedTable.changeTableColor(ColorChangeDialogControl.getSelectedColor())
 
     def collapseExpandTable(self, cursorPosition):
         ObtainedTable = self.__TablesModel.getTableFromPosition(cursorPosition)
@@ -88,7 +100,11 @@ class TablesController:
             TableContextMenu.setupUI(ObtainedTable.getTableCollapseStatus())
             TableContextMenuControl = TableContextMenuController(TableContextMenu)
             TableContextMenu.display(globalCursorPosition)
-            if TableContextMenuControl.getSelectCollapseExpandTableStatus():
+            if TableContextMenuControl.getSelectChangeTableColorStatus():
+                TableContextMenuControl.unselectChangeTableColor()
+                self.__isContextMenuAtWork = False
+                return TableContextMenuEnum.CHANGE_COLOR
+            elif TableContextMenuControl.getSelectCollapseExpandTableStatus():
                 TableContextMenuControl.unselectCollapseExpandTable()
                 self.__isContextMenuAtWork = False
                 return TableContextMenuEnum.COLLAPSE_EXPAND

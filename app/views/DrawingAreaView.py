@@ -4,26 +4,20 @@ from typing import override
 
 
 class DrawingAreaView(QWidget):
-    def __init__(self, DrawingAreaController):
+    def __init__(self, DrawingAreaController, DrawingAreaModel):
         super().__init__()
-        # do modelu
-        self.__minimumWidth = 400
-        self.__minimumHeight = 400
         self.__DrawingAreaController = DrawingAreaController
-        self.setMinimumSize(self.__minimumWidth, self.__minimumHeight)
-        self.setMaximumSize(800, 600)
+        self.__DrawingAreaModel = DrawingAreaModel
+        self.setMinimumSize(self.__DrawingAreaModel.getStartMinimumWidth(),
+                            self.__DrawingAreaModel.getStartMinimumHeight())
+        self.setMaximumSize(self.__DrawingAreaModel.getStartMaximumWidth(),
+                            self.__DrawingAreaModel.getStartMaximumHeight())
         self.setMouseTracking(True)
 
     def setupUI(self):
         self.setObjectName(u"DrawingArea")
         self.setAttribute(Qt.WA_StyledBackground, True)
-        self.setStyleSheet("background-color: #e6e6e6;")
-
-    def getMinimumWidth(self):
-        return self.__minimumWidth
-
-    def getMinimumHeight(self):
-        return self.__minimumHeight
+        self.setStyleSheet("background-color: #E6E6E6;")
 
     @override
     def mouseMoveEvent(self, event):

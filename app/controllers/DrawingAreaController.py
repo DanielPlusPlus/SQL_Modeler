@@ -9,16 +9,19 @@ from app.enums.InheritanceContextMenuEnum import InheritanceContextMenuEnum
 class DrawingAreaController:
     def __init__(self):
         self.__DrawingAreaView = None
+        self.__DrawingAreaModel = None
         self.__cursorPosition = QPoint()
         self.__MainWindowController = None
         self.__MenuBarController = None
         self.__TablesController = None
         self.__RelationshipsController = None
         self.__InheritancesController = None
-        self.__scaleFactor = 1.0
 
     def setDrawingAreaView(self, DrawingAreaView):
         self.__DrawingAreaView = DrawingAreaView
+
+    def setDrawingAreaModel(self, DrawingAreaModel):
+        self.__DrawingAreaModel = DrawingAreaModel
 
     def setMainWindowController(self, MainWindowController):
         self.__MainWindowController = MainWindowController
@@ -45,7 +48,7 @@ class DrawingAreaController:
             if self.__MenuBarController.getCreateTableToolStatus():
                 self.__TablesController.addTable(self.__cursorPosition)
                 self.__MenuBarController.unselectCreateTableTool()
-                self.__updateMinimumSize()
+                self.__updateDrawingAreaSize()
 
             elif (self.__MenuBarController.getCreate_1_1_RelToolStatus()
                   is ConnectionsStatusEnum.IN_MOTION_BEFORE_CLICK):
@@ -103,7 +106,7 @@ class DrawingAreaController:
 
             elif self.__TablesController.getTableInTransferStatus():
                 self.__TablesController.unselectTableInTransfer(self.__cursorPosition)
-                self.__updateMinimumSize()
+                self.__updateDrawingAreaSize()
             elif self.__TablesController.getContextMenuAtWorkStatus():
                 self.__TablesController.unselectContextMenuAtWork()
             elif self.__RelationshipsController.getContextMenuAtWorkStatus():
@@ -147,7 +150,9 @@ class DrawingAreaController:
                 globalCursorPosition = self.__convertCursorPositionToGlobal(self.__cursorPosition)
                 result = self.__TablesController.displayTableContextMenu(self.__cursorPosition,
                                                                          globalCursorPosition)
-                if result is TableContextMenuEnum.COLLAPSE_EXPAND:
+                if result is TableContextMenuEnum.CHANGE_COLOR:
+                    self.__TablesController.changeTableColor(self.__cursorPosition)
+                elif result is TableContextMenuEnum.COLLAPSE_EXPAND:
                     self.__TablesController.collapseExpandTable(self.__cursorPosition)
                 elif result is TableContextMenuEnum.EDIT:
                     self.__TablesController.editTable(self.__cursorPosition)
@@ -189,13 +194,22 @@ class DrawingAreaController:
         elif self.__InheritancesController.getInheritanceBeingDrawnStatus():
             self.__InheritancesController.selectDrawInheritanceBeingDrawn(self.__cursorPosition)
 
-    def __updateMinimumSize(self):
+    def __updateDrawingAreaSize(self):
         extremeTableDimensions = self.__TablesController.getExtremeTableDimensions()
-        minimumWidth = max(self.__DrawingAreaView.getMinimumWidth(),
-                           extremeTableDimensions["extremeRightDimension"] + 50)
-        minimumHeight = max(self.__DrawingAreaView.getMinimumHeight(),
-                            extremeTableDimensions["extremeBottomDimension"] + 50)
-        self.__DrawingAreaView.setMinimumSize(minimumWidth, minimumHeight)
+        newMaximumWidth = max(self.__DrawingAreaModel.getStartMaximumWidth(),
+                              extremeTableDimensions["extremeRightDimension"] + 50)
+        newMaximumHeight = max(self.__DrawingAreaModel.getStartMaximumHeight(),
+                               extremeTableDimensions["extremeBottomDimension"] + 50)
+        newMinimumWidth = max(self.__DrawingAreaModel.getStartMinimumWidth(),
+                              extremeTableDimensions["extremeRightDimension"] + 50)
+        newMinimumHeight = max(self.__DrawingAreaModel.getStartMinimumHeight(),
+                               extremeTableDimensions["extremeBottomDimension"] + 50)
+        self.__DrawingAreaModel.changeMaximumDimensions(newMaximumWidth, newMaximumHeight)
+        self.__DrawingAreaModel.changeMinimumDimensions(newMinimumWidth, newMinimumHeight)
+        self.__DrawingAreaView.setMaximumSize(self.__DrawingAreaModel.getActualMaximumWidth(),
+                                              self.__DrawingAreaModel.getActualMaximumHeight())
+        self.__DrawingAreaView.setMinimumSize(self.__DrawingAreaModel.getActualMinimumWidth(),
+                                              self.__DrawingAreaModel.getActualMinimumHeight())
 
     def updateView(self):
         self.__DrawingAreaView.update()

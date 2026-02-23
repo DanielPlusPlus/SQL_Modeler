@@ -18,6 +18,7 @@ from app.controllers.InheritancesController import InheritancesController
 from app.controllers.ExportDiagramController import ExportDiagramController
 from app.controllers.LoadSQLController import LoadSQLController
 from app.controllers.GenerateSQLController import GenerateSQLController
+from app.models.DrawingAreaModel import DrawingAreaModel
 from app.models.TablesModel import TablesModel
 from app.models.RelationshipsModel import RelationshipsModel
 from app.models.InheritancesModel import InheritancesModel
@@ -46,6 +47,7 @@ class MainWindow(QMainWindow):
         self.__DrawingAreaController = DrawingAreaController()
 
         # models
+        self.__DrawingAreaModel = DrawingAreaModel()
         self.__TablesModel = TablesModel()
         self.__RelationshipsModel = RelationshipsModel()
         self.__InheritancesModel = InheritancesModel()
@@ -61,7 +63,7 @@ class MainWindow(QMainWindow):
                                                      self.__DrawingAreaController, self.__LoadSQLController,
                                                      self.__ExportDialogController, self.__GenerateSQLController)
         self.__ToolBarController = ToolBarController(self.__ToolBarView, self.__MenuBarController)
-        self.__DrawingAreaView = DrawingAreaView(self.__DrawingAreaController)
+        self.__DrawingAreaView = DrawingAreaView(self.__DrawingAreaController, self.__DrawingAreaModel)
         self.__DrawingAreaView.setupUI()
         self.__ScrollAreaView.setupUI(self.__DrawingAreaView)
         self.__MainWindowController.setWidgetToCentralWidget(self.__ScrollAreaView)
@@ -71,6 +73,7 @@ class MainWindow(QMainWindow):
 
         # controllers
         self.__DrawingAreaController.setDrawingAreaView(self.__DrawingAreaView)
+        self.__DrawingAreaController.setDrawingAreaModel(self.__DrawingAreaModel)
         self.__DrawingAreaController.setMainWindowController(self.__MainWindowController)
         self.__TablesController = TablesController(self, self.__TablesView, self.__TablesModel,
                                                    self.__RelationshipsModel,
