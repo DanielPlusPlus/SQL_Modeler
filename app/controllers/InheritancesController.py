@@ -1,7 +1,9 @@
 from app.views.ConfirmationDialogView import ConfirmationDialogView
 from app.views.InheritanceContextMenuView import InheritanceContextMenuView
+from app.views.ColorChangeDialogView import ColorChangeDialogView
 from app.controllers.ConnectionsController import ConnectionsController
 from app.controllers.InheritanceContextMenuController import InheritanceContextMenuController
+from app.controllers.ColorChangeDialogController import ColorChangeDialogController
 from app.enums.InheritanceContextMenuEnum import InheritanceContextMenuEnum
 
 
@@ -25,6 +27,14 @@ class InheritancesController(ConnectionsController):
     def addInheritance(self):
         self.__InheritancesModel.addInheritance(self._FirstClickedTable, self._SecondClickedTable)
         self.resetTables()
+
+    def changeInheritanceColor(self, cursorPosition):
+        ObtainedInheritance = self.__InheritancesModel.getInheritanceFromPosition(cursorPosition)
+        if ObtainedInheritance is not None:
+            ColorChangeDialog = ColorChangeDialogView(self._ParentWindow)
+            ColorChangeDialog.setupUi()
+            ColorChangeDialogControl = ColorChangeDialogController(ColorChangeDialog, ObtainedInheritance)
+            ColorChangeDialog.displayDialog()
 
     def deleteInheritance(self, cursorPosition):
         ObtainedInheritance = self.__InheritancesModel.getInheritanceFromPosition(cursorPosition)
@@ -52,7 +62,11 @@ class InheritancesController(ConnectionsController):
             InheritanceContextMenu.setupUI()
             InheritanceContextMenuControl = InheritanceContextMenuController(InheritanceContextMenu)
             InheritanceContextMenu.display(globalCursorPosition)
-            if InheritanceContextMenuControl.getSelectDeleteInheritanceStatus():
+            if InheritanceContextMenuControl.getSelectChangeInheritanceColorStatus():
+                InheritanceContextMenuControl.unselectChangeInheritanceColor()
+                self.__isContextMenuAtWork = False
+                return InheritanceContextMenuEnum.CHANGE_COLOR
+            elif InheritanceContextMenuControl.getSelectDeleteInheritanceStatus():
                 InheritanceContextMenuControl.unselectDeleteInheritance()
                 self.__isContextMenuAtWork = False
                 return InheritanceContextMenuEnum.DELETE

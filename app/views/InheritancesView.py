@@ -1,4 +1,5 @@
 import math
+
 from PySide6.QtGui import QPainter, QPen, QColor, QPolygonF
 from PySide6.QtCore import Qt, QPoint, QPointF
 
@@ -11,10 +12,10 @@ class InheritancesView:
 
     def drawInheritances(self):
         painter = QPainter(self.__ParentWindow)
-        painter.setPen(QPen(QColor(Qt.GlobalColor.black), 2, Qt.SolidLine))
         painter.setRenderHint(QPainter.Antialiasing)
 
         for inheritance in self.__InheritanceModel.getInheritances():
+            painter.setPen(QPen(QColor(inheritance.getColor()), 2, Qt.SolidLine))
             child_rect = inheritance.FirstTable.getRectangle()
             parent_rect = inheritance.SecondTable.getRectangle()
 

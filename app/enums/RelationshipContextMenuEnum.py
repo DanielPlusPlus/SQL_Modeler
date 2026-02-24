@@ -2,5 +2,6 @@ from enum import Enum
 
 
 class RelationshipContextMenuEnum(Enum):
-    DELETE = 1
-    NONE = 2
+    CHANGE_COLOR = 1
+    DELETE = 2
+    NONE = 3

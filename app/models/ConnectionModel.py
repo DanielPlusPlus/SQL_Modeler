@@ -1,5 +1,12 @@
-class ConnectionModel:
+from PySide6.QtGui import QColor
+from PySide6.QtCore import Qt
+
+from app.models.StructureModel import StructureModel
+
+
+class ConnectionModel(StructureModel):
     def __init__(self, FirstTable, SecondTable):
+        super().__init__(QColor(Qt.GlobalColor.black))
         self.FirstTable = FirstTable
         self.SecondTable = SecondTable
 

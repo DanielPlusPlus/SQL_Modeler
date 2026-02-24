@@ -33,7 +33,7 @@ class TablesView:
         font = QFont("Sans", 10)
         font.setBold(True)
         Painter.setFont(font)
-        backgroundColor = ObtainedTable.getTableColor()
+        backgroundColor = ObtainedTable.getColor()
         Painter.fillRect(ObtainedTable.getRectangle(), backgroundColor)
 
         Painter.drawText(titleRectangle, Qt.AlignCenter, ObtainedTable.getTableName())
@@ -53,7 +53,7 @@ class TablesView:
         font = QFont("Sans", 10)
         font.setBold(True)
         Painter.setFont(font)
-        backgroundColor = ObtainedTable.getTableColor()
+        backgroundColor = ObtainedTable.getColor()
         Painter.fillRect(titleRectangle, backgroundColor)
 
         Painter.drawRect(titleRectangle)

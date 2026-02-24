@@ -161,14 +161,18 @@ class DrawingAreaController:
                 else:
                     result = self.__RelationshipsController.displayRelationshipContextMenu(self.__cursorPosition,
                                                                                            globalCursorPosition)
-
-                    if result is RelationshipContextMenuEnum.DELETE:
+                    if result is RelationshipContextMenuEnum.CHANGE_COLOR:
+                        self.__RelationshipsController.changeRelationshipColor(self.__cursorPosition)
+                    elif result is RelationshipContextMenuEnum.DELETE:
                         self.__RelationshipsController.deleteRelationship(self.__cursorPosition)
+                    else:
+                        result = self.__InheritancesController.displayInheritanceContextMenu(self.__cursorPosition,
+                                                                                             globalCursorPosition)
+                        if result is InheritanceContextMenuEnum.CHANGE_COLOR:
+                            self.__InheritancesController.changeInheritanceColor(self.__cursorPosition)
+                        elif result is InheritanceContextMenuEnum.DELETE:
+                            self.__InheritancesController.deleteInheritance(self.__cursorPosition)
 
-                    result = self.__InheritancesController.displayInheritanceContextMenu(self.__cursorPosition,
-                                                                                         globalCursorPosition)
-                    if result is InheritanceContextMenuEnum.DELETE:
-                        self.__InheritancesController.deleteInheritance(self.__cursorPosition)
         elif event.button() == Qt.MiddleButton:
             self.__scaleFactor = 1.0
 

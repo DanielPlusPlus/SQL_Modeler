@@ -3,10 +3,12 @@ from PySide6.QtWidgets import QDialog
 from app.views.ColumnSelectionDialogView import ColumnSelectionDialogView
 from app.views.ConfirmationDialogView import ConfirmationDialogView
 from app.views.ErrorDialogView import ErrorDialogView
+from app.views.ColorChangeDialogView import ColorChangeDialogView
 from app.views.RelationshipContextMenuView import RelationshipContextMenuView
 from app.controllers.ConnectionsController import ConnectionsController
 from app.controllers.ColumnSelectionDialogController import ColumnSelectionDialogController
 from app.controllers.RelationshipContextMenuController import RelationshipContextMenuController
+from app.controllers.ColorChangeDialogController import ColorChangeDialogController
 from app.enums.RelationshipContextMenuEnum import RelationshipContextMenuEnum
 
 
@@ -113,6 +115,14 @@ class RelationshipsController(ConnectionsController):
     def deleteRelationshipByTable(self, ObtainedTable):
         self.__RelationshipsModel.deleteSelectedRelationshipByTable(ObtainedTable)
 
+    def changeRelationshipColor(self, cursorPosition):
+        ObtainedRelationship = self.__RelationshipsModel.getRelationshipFromPosition(cursorPosition)
+        if ObtainedRelationship is not None:
+            ColorChangeDialog = ColorChangeDialogView(self._ParentWindow)
+            ColorChangeDialog.setupUi()
+            ColorChangeDialogControl = ColorChangeDialogController(ColorChangeDialog, ObtainedRelationship)
+            ColorChangeDialog.displayDialog()
+
     def selectDrawRelationshipBeingDrawn(self, cursorPosition):
         self.__RelationshipsView.drawRelationshipBeingDrawn(self._FirstClickedTable, cursorPosition)
 
@@ -133,7 +143,11 @@ class RelationshipsController(ConnectionsController):
             RelationshipContextMenu.setupUI()
             RelationshipContextMenuControl = RelationshipContextMenuController(RelationshipContextMenu)
             RelationshipContextMenu.display(globalCursorPosition)
-            if RelationshipContextMenuControl.getSelectDeleteRelationshipStatus():
+            if RelationshipContextMenuControl.getSelectChangeRelationshipColorStatus():
+                RelationshipContextMenuControl.unselectChangeRelationshipColor()
+                self.__isContextMenuAtWork = False
+                return RelationshipContextMenuEnum.CHANGE_COLOR
+            elif RelationshipContextMenuControl.getSelectDeleteRelationshipStatus():
                 RelationshipContextMenuControl.unselectDeleteRelationship()
                 self.__isContextMenuAtWork = False
                 return RelationshipContextMenuEnum.DELETE

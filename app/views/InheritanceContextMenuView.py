@@ -7,7 +7,10 @@ class InheritanceContextMenuView(QMenu):
         super().__init__(ParentWindow)
 
     def setupUI(self):
+        self.actionChangeInheritanceColor = QAction(u"Change Color", self)
         self.actionDeleteInheritance = QAction(u"Delete Inheritance", self)
+
+        self.addAction(self.actionChangeInheritanceColor)
         self.addAction(self.actionDeleteInheritance)
 
     def display(self, globalCursorPosition):

@@ -1,11 +1,13 @@
 from PySide6.QtCore import QRect
 from PySide6.QtGui import QColor
 
+from app.models.StructureModel import StructureModel
 from app.models.TableColumnsModel import TableColumnsModel
 
 
-class TableModel:
+class TableModel(StructureModel):
     def __init__(self, x, y, width, rowHeight, minRowsNumber, tableNumber):
+        super().__init__(QColor("#FFFF99"))
         self.__Rectangle = QRect(
             x - width // 2,
             y - (rowHeight * minRowsNumber) // 2,
@@ -17,7 +19,6 @@ class TableModel:
         self.__minRowsNumber = minRowsNumber
         self.__rowsNumber = minRowsNumber
         self.__tableNumber = tableNumber
-        self.__tableColor = QColor("#FFFF99")
         self.__isTableCollapsed = False
         if not self.__tableNumber:
             self.__tableName = "New Table"
@@ -69,9 +70,6 @@ class TableModel:
             self.getRowHeight()
         )
 
-    def getTableColor(self):
-        return self.__tableColor
-
     def getTableCollapseStatus(self):
         return self.__isTableCollapsed
 
@@ -103,9 +101,6 @@ class TableModel:
             self.__rowHeight * self.getRowsNumber()
         )
         self.__Rectangle = newRectangle
-
-    def changeTableColor(self, newColor):
-        self.__tableColor = newColor
 
     def changeTableCollapseStatus(self):
         self.__isTableCollapsed = not self.__isTableCollapsed

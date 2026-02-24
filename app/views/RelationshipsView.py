@@ -1,4 +1,5 @@
 import math
+
 from PySide6.QtGui import QPainter, QPen, QColor
 from PySide6.QtCore import Qt, QPoint, QPointF
 
@@ -13,10 +14,10 @@ class RelationshipsView:
 
     def drawRelationships(self):
         painter = QPainter(self.ParentWindow)
-        painter.setPen(QPen(QColor(Qt.GlobalColor.black), 2, Qt.PenStyle.SolidLine))
         painter.setRenderHint(QPainter.Antialiasing)
 
         for rel in self.RelationshipsModel.getRelationships():
+            painter.setPen(QPen(QColor(rel.getColor()), 2, Qt.PenStyle.SolidLine))
             first_rect = rel.FirstTable.getRectangle()
             second_rect = rel.SecondTable.getRectangle()
 

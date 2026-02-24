@@ -1,10 +1,9 @@
-from PySide6.QtWidgets import QDialog
 from app.views.ConfirmationDialogView import ConfirmationDialogView
 from app.views.TableContextMenuView import TableContextMenuView
 from app.views.ColorChangeDialogView import ColorChangeDialogView
-from app.controllers.ColorChangeDialogController import ColorChangeDialogController
 from app.views.EditTableDialogView import EditTableDialogView
 from app.controllers.TableContextMenuController import TableContextMenuController
+from app.controllers.ColorChangeDialogController import ColorChangeDialogController
 from app.controllers.EditTableDialogController import EditTableDialogController
 from app.enums.TableContextMenuEnum import TableContextMenuEnum
 
@@ -39,9 +38,8 @@ class TablesController:
         if ObtainedTable is not None:
             ColorChangeDialog = ColorChangeDialogView(self.__ParentWindow)
             ColorChangeDialog.setupUi()
-            ColorChangeDialogControl = ColorChangeDialogController(ColorChangeDialog)
-            if ColorChangeDialog.displayDialog() == QDialog.Accepted:
-                ObtainedTable.changeTableColor(ColorChangeDialogControl.getSelectedColor())
+            ColorChangeDialogControl = ColorChangeDialogController(ColorChangeDialog, ObtainedTable)
+            ColorChangeDialog.displayDialog()
 
     def collapseExpandTable(self, cursorPosition):
         ObtainedTable = self.__TablesModel.getTableFromPosition(cursorPosition)
