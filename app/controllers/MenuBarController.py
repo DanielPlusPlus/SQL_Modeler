@@ -18,6 +18,10 @@ class MenuBarController:
         MenuBarView.actionExportDiagram.triggered.connect(self.selectExportDiagramTool)
         MenuBarView.actionGenerateSQL.triggered.connect(self.selectGenerateSQLTool)
         MenuBarView.actionQuit.triggered.connect(self.__selectQuit)
+        MenuBarView.actionZoomIn.triggered.connect(self.__selectZoomIn)
+        MenuBarView.actionZoomOut.triggered.connect(self.__selectZoomOut)
+        MenuBarView.actionResetZoom.triggered.connect(self.__selectResetZoom)
+        MenuBarView.actionResetZoom.triggered.connect(self.__selectQuit)
         MenuBarView.actionCreateTable.triggered.connect(self.selectCreateTableTool)
         MenuBarView.actionCreate_1_1_Rel.triggered.connect(self.selectCreate_1_1_RelTool)
         MenuBarView.actionCreate_1_n_Rel.triggered.connect(self.selectCreate_1_n_RelTool)
@@ -41,6 +45,15 @@ class MenuBarController:
 
     def __selectQuit(self):
         self.__MainWindowController.closeWindow()
+
+    def __selectZoomIn(self):
+        self.__DrawingAreaController.changeScaleFactor(True)
+
+    def __selectZoomOut(self):
+        self.__DrawingAreaController.changeScaleFactor(False)
+
+    def __selectResetZoom(self):
+        self.__DrawingAreaController.resetScaleFactor()
 
     def selectCreateTableTool(self):
         self.__unselectAllTools()

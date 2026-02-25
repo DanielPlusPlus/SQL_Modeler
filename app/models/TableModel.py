@@ -7,7 +7,7 @@ from app.models.TableColumnsModel import TableColumnsModel
 
 class TableModel(StructureModel):
     def __init__(self, x, y, width, rowHeight, minRowsNumber, tableNumber):
-        super().__init__(QColor("#FFFF99"))
+        super().__init__(2, QColor("#FFFF99"), 10)
         self.__Rectangle = QRect(
             x - width // 2,
             y - (rowHeight * minRowsNumber) // 2,

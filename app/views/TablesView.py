@@ -11,16 +11,16 @@ class TablesView:
         self.drawTables()
 
     def drawTempTable(self, position, width=100, rowsHeight=20, rowsNumber=5):
-        Painter = QPainter(self.__ParentWindow)
-        Painter.setPen(QPen(QColor(Qt.GlobalColor.black), 2, Qt.PenStyle.SolidLine))
         CreatedTable = TableModel(position.x(), position.y(), width, rowsHeight, rowsNumber, 0)
+        Painter = QPainter(self.__ParentWindow)
+        Painter.setPen(QPen(QColor(Qt.GlobalColor.black), CreatedTable.getLineThickness(), Qt.PenStyle.SolidLine))
         self.__drawTable(Painter, CreatedTable)
 
     def drawTables(self):
         Painter = QPainter(self.__ParentWindow)
-        Painter.setPen(QPen(QColor(Qt.GlobalColor.black), 2, Qt.PenStyle.SolidLine))
         tables = self.__TablesModel.getTables()
         for ObtainedTable in tables:
+            Painter.setPen(QPen(QColor(Qt.GlobalColor.black), ObtainedTable.getLineThickness(), Qt.PenStyle.SolidLine))
             if ObtainedTable.getTableCollapseStatus():
                 self.__drawCollapsedTable(Painter, ObtainedTable)
             else:
@@ -30,11 +30,10 @@ class TablesView:
         obtainedTableColumns = ObtainedTable.getTableColumns()
         titleRectangle = ObtainedTable.getTitleRectangle()
 
-        font = QFont("Sans", 10)
+        font = QFont("Sans", ObtainedTable.getFontSize())
         font.setBold(True)
         Painter.setFont(font)
-        backgroundColor = ObtainedTable.getColor()
-        Painter.fillRect(ObtainedTable.getRectangle(), backgroundColor)
+        Painter.fillRect(ObtainedTable.getRectangle(), ObtainedTable.getColor())
 
         Painter.drawText(titleRectangle, Qt.AlignCenter, ObtainedTable.getTableName())
 
@@ -50,11 +49,10 @@ class TablesView:
     def __drawCollapsedTable(self, Painter, ObtainedTable):
         titleRectangle = ObtainedTable.getTitleRectangle()
 
-        font = QFont("Sans", 10)
+        font = QFont("Sans", ObtainedTable.getFontSize())
         font.setBold(True)
         Painter.setFont(font)
-        backgroundColor = ObtainedTable.getColor()
-        Painter.fillRect(titleRectangle, backgroundColor)
+        Painter.fillRect(titleRectangle, ObtainedTable.getColor())
 
         Painter.drawRect(titleRectangle)
         Painter.drawText(titleRectangle, Qt.AlignCenter, ObtainedTable.getTableName())

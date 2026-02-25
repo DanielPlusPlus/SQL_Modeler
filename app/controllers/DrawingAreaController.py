@@ -174,16 +174,14 @@ class DrawingAreaController:
                             self.__InheritancesController.deleteInheritance(self.__cursorPosition)
 
         elif event.button() == Qt.MiddleButton:
-            self.__scaleFactor = 1.0
+            self.resetScaleFactor()
 
     def handleWheelMove(self, event):
         delta = event.angleDelta().y()
         if delta > 0:
-            self.__scaleFactor = min(2.0, round(self.__scaleFactor + 0.1, 1))
+            self.changeScaleFactor(True)
         else:
-            self.__scaleFactor = max(0.1, round(self.__scaleFactor - 0.1, 1))
-
-        print(self.__scaleFactor)
+            self.changeScaleFactor(False)
 
     def handlePaintEvent(self):
         self.__RelationshipsController.selectDrawRelationships()
@@ -200,16 +198,10 @@ class DrawingAreaController:
 
     def __updateDrawingAreaSize(self):
         extremeTableDimensions = self.__TablesController.getExtremeTableDimensions()
-        newMaximumWidth = max(self.__DrawingAreaModel.getStartMaximumWidth(),
-                              extremeTableDimensions["extremeRightDimension"] + 50)
-        newMaximumHeight = max(self.__DrawingAreaModel.getStartMaximumHeight(),
-                               extremeTableDimensions["extremeBottomDimension"] + 50)
-        newMinimumWidth = max(self.__DrawingAreaModel.getStartMinimumWidth(),
-                              extremeTableDimensions["extremeRightDimension"] + 50)
-        newMinimumHeight = max(self.__DrawingAreaModel.getStartMinimumHeight(),
-                               extremeTableDimensions["extremeBottomDimension"] + 50)
-        self.__DrawingAreaModel.changeMaximumDimensions(newMaximumWidth, newMaximumHeight)
-        self.__DrawingAreaModel.changeMinimumDimensions(newMinimumWidth, newMinimumHeight)
+        self.__DrawingAreaModel.changeMaximumDimensions(extremeTableDimensions["extremeRightDimension"],
+                                                        extremeTableDimensions["extremeBottomDimension"])
+        self.__DrawingAreaModel.changeMinimumDimensions(extremeTableDimensions["extremeRightDimension"],
+                                                        extremeTableDimensions["extremeBottomDimension"])
         self.__DrawingAreaView.setMaximumSize(self.__DrawingAreaModel.getActualMaximumWidth(),
                                               self.__DrawingAreaModel.getActualMaximumHeight())
         self.__DrawingAreaView.setMinimumSize(self.__DrawingAreaModel.getActualMinimumWidth(),
@@ -217,6 +209,16 @@ class DrawingAreaController:
 
     def updateView(self):
         self.__DrawingAreaView.update()
+
+    def changeScaleFactor(self, isZoomIn):
+        if isZoomIn:
+            self.__DrawingAreaModel.increaseScaleFactor()
+        else:
+            self.__DrawingAreaModel.decreaseScaleFactor()
+        print(self.__DrawingAreaModel.getScaleFactor())
+
+    def resetScaleFactor(self):
+        self.__DrawingAreaModel.resetScaleFactor()
 
     def unselectConnectionsBeingDrawn(self):
         self.__RelationshipsController.unselectRelationshipBeingDrawn()

@@ -9,6 +9,7 @@ class MenuBarView(QMenuBar):
 
     def setupUI(self):
         self.__menuFile = QMenu(u"File", self)
+        self.__menuView = QMenu(u"View", self)
         self.__menuTables = QMenu(u"Tables", self)
         self.__menuConnections = QMenu(u"Connections", self)
         self.__menuRelationships = QMenu(u"Relationships", self)
@@ -18,6 +19,10 @@ class MenuBarView(QMenuBar):
         self.actionExportDiagram = QAction(u"Export Diagram", self)
         self.actionGenerateSQL = QAction(u"Generate SQL Code", self)
         self.actionQuit = QAction(u"Quit", self)
+
+        self.actionZoomIn = QAction(u"Zoom In", self)
+        self.actionZoomOut = QAction(u"Zoom Out", self)
+        self.actionResetZoom = QAction(u"Reset Zoom", self)
 
         self.actionCreateTable = QAction(QIcon("app\\icons\\table.png"), u"Create Table", self)
 
@@ -33,6 +38,10 @@ class MenuBarView(QMenuBar):
         self.__menuFile.addAction(self.actionGenerateSQL)
         self.__menuFile.addAction(self.actionQuit)
 
+        self.__menuView.addAction(self.actionZoomIn)
+        self.__menuView.addAction(self.actionZoomOut)
+        self.__menuView.addAction(self.actionResetZoom)
+
         self.__menuTables.addAction(self.actionCreateTable)
 
         self.__menuConnections.addMenu(self.__menuRelationships)
@@ -42,5 +51,6 @@ class MenuBarView(QMenuBar):
         self.__menuConnections.addAction(self.actionCreateInheritance)
 
         self.addMenu(self.__menuFile)
+        self.addMenu(self.__menuView)
         self.addMenu(self.__menuTables)
         self.addMenu(self.__menuConnections)

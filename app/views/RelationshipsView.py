@@ -3,6 +3,7 @@ import math
 from PySide6.QtGui import QPainter, QPen, QColor
 from PySide6.QtCore import Qt, QPoint, QPointF
 
+from app.models.RelationshipModel import RelationshipModel
 from app.enums.RelationshipsEnum import RelationshipsEnum
 
 
@@ -17,7 +18,7 @@ class RelationshipsView:
         painter.setRenderHint(QPainter.Antialiasing)
 
         for rel in self.RelationshipsModel.getRelationships():
-            painter.setPen(QPen(QColor(rel.getColor()), 2, Qt.PenStyle.SolidLine))
+            painter.setPen(QPen(QColor(rel.getColor()), rel.getLineThickness(), Qt.PenStyle.SolidLine))
             first_rect = rel.FirstTable.getRectangle()
             second_rect = rel.SecondTable.getRectangle()
 
@@ -93,8 +94,9 @@ class RelationshipsView:
             draw_crows_foot(offset_point(end, angle, offset_distance))
 
     def drawRelationshipBeingDrawn(self, FirstTable, cursorPosition):
+        CreatedRelationship = RelationshipModel(FirstTable, None, None, None, None)
         painter = QPainter(self.ParentWindow)
-        painter.setPen(QPen(QColor(Qt.GlobalColor.black), 2, Qt.PenStyle.DashLine))
+        painter.setPen(QPen(QColor(Qt.GlobalColor.black), CreatedRelationship.getLineThickness(), Qt.PenStyle.DashLine))
         painter.setRenderHint(QPainter.Antialiasing)
 
         first_rect = FirstTable.getRectangle()

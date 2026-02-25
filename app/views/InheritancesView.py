@@ -1,8 +1,8 @@
 import math
-
 from PySide6.QtGui import QPainter, QPen, QColor, QPolygonF
 from PySide6.QtCore import Qt, QPoint, QPointF
 
+from app.models.InheritanceModel import InheritanceModel
 
 class InheritancesView:
     def __init__(self, InheritanceModel, ParentWindow):
@@ -15,7 +15,7 @@ class InheritancesView:
         painter.setRenderHint(QPainter.Antialiasing)
 
         for inheritance in self.__InheritanceModel.getInheritances():
-            painter.setPen(QPen(QColor(inheritance.getColor()), 2, Qt.SolidLine))
+            painter.setPen(QPen(QColor(inheritance.getColor()), inheritance.getLineThickness(), Qt.SolidLine))
             child_rect = inheritance.FirstTable.getRectangle()
             parent_rect = inheritance.SecondTable.getRectangle()
 
@@ -76,6 +76,7 @@ class InheritancesView:
         return QPoint(x, y)
 
     def drawInheritanceBeingDrawn(self, FirstTable, cursorPosition):
+        CreatedInheritance = InheritanceModel(FirstTable, None)
         painter = QPainter(self.__ParentWindow)
         painter.setPen(QPen(QColor(Qt.GlobalColor.black), 2, Qt.DashLine))
         painter.setRenderHint(QPainter.Antialiasing)
