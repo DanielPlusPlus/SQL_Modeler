@@ -21,7 +21,6 @@ class MenuBarController:
         MenuBarView.actionZoomIn.triggered.connect(self.__selectZoomIn)
         MenuBarView.actionZoomOut.triggered.connect(self.__selectZoomOut)
         MenuBarView.actionResetZoom.triggered.connect(self.__selectResetZoom)
-        MenuBarView.actionResetZoom.triggered.connect(self.__selectQuit)
         MenuBarView.actionCreateTable.triggered.connect(self.selectCreateTableTool)
         MenuBarView.actionCreate_1_1_Rel.triggered.connect(self.selectCreate_1_1_RelTool)
         MenuBarView.actionCreate_1_n_Rel.triggered.connect(self.selectCreate_1_n_RelTool)
@@ -34,13 +33,13 @@ class MenuBarController:
     def selectExportDiagramTool(self):
         self.__unselectAllTools()
         self.__DrawingAreaController.unselectConnectionsBeingDrawn()
-        self.__DrawingAreaController.updateView()
+        # self.__DrawingAreaController.updateView()
         self.__ExportDiagramController.exportDiagramToPNG()
 
     def selectGenerateSQLTool(self):
         self.__unselectAllTools()
         self.__DrawingAreaController.unselectConnectionsBeingDrawn()
-        self.__DrawingAreaController.updateView()
+        # self.__DrawingAreaController.updateView()
         self.__GenerateSQLController.displayDialog()
 
     def __selectQuit(self):
@@ -58,7 +57,7 @@ class MenuBarController:
     def selectCreateTableTool(self):
         self.__unselectAllTools()
         self.__DrawingAreaController.unselectConnectionsBeingDrawn()
-        self.__DrawingAreaController.updateView()
+        # self.__DrawingAreaController.updateView()
         self.__isTableSelected = True
 
     def unselectCreateTableTool(self):
@@ -70,7 +69,7 @@ class MenuBarController:
     def selectCreate_1_1_RelTool(self):
         self.__unselectAllTools()
         self.__DrawingAreaController.unselectConnectionsBeingDrawn()
-        self.__DrawingAreaController.updateView()
+        # self.__DrawingAreaController.updateView()
         self.__is_1_1_RelSelected = ConnectionsStatusEnum.IN_MOTION_BEFORE_CLICK
 
     def changeStatusToAfterClick_1_1_RelTool(self):
@@ -85,7 +84,7 @@ class MenuBarController:
     def selectCreate_1_n_RelTool(self):
         self.__unselectAllTools()
         self.__DrawingAreaController.unselectConnectionsBeingDrawn()
-        self.__DrawingAreaController.updateView()
+        # self.__DrawingAreaController.updateView()
         self.__is_1_n_RelSelected = ConnectionsStatusEnum.IN_MOTION_BEFORE_CLICK
 
     def changeStatusToAfterClick_1_n_RelTool(self):
@@ -100,7 +99,7 @@ class MenuBarController:
     def selectCreate_n_n_RelTool(self):
         self.__unselectAllTools()
         self.__DrawingAreaController.unselectConnectionsBeingDrawn()
-        self.__DrawingAreaController.updateView()
+        # self.__DrawingAreaController.updateView()
         self.__is_n_n_RelSelected = ConnectionsStatusEnum.IN_MOTION_BEFORE_CLICK
 
     def changeStatusToAfterClick_n_n_RelTool(self):
@@ -115,7 +114,7 @@ class MenuBarController:
     def selectCreateInheritanceTool(self):
         self.__unselectAllTools()
         self.__DrawingAreaController.unselectConnectionsBeingDrawn()
-        self.__DrawingAreaController.updateView()
+        # self.__DrawingAreaController.updateView()
         self.__isInheritanceSelected = ConnectionsStatusEnum.IN_MOTION_BEFORE_CLICK
 
     def changeStatusToAfterClickInheritanceTool(self):

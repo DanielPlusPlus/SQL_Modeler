@@ -19,8 +19,8 @@ class TablesController:
         self.__isTableInTransfer = False
         self.__isContextMenuAtWork = False
 
-    def addTable(self, cursorPosition):
-        self.__TablesModel.addTable(cursorPosition)
+    def addTable(self, cursorPosition, scaleFactor):
+        self.__TablesModel.addTable(cursorPosition, scaleFactor)
 
     def deleteTable(self, cursorPosition):
         ObtainedTable = self.__TablesModel.getTableFromPosition(cursorPosition)
@@ -61,16 +61,16 @@ class TablesController:
             self.__TablesModel.deleteSelectedTable(self.__TableInTransfer)
             self.__TablesModel.addSelectedTable(self.__TableInTransfer)
 
-    def unselectTableInTransfer(self, cursorPosition):
-        self.__TableInTransfer.changeTablePosition(cursorPosition.x(), cursorPosition.y())
+    def unselectTableInTransfer(self, cursorPosition, scaleFactor):
+        self.__TableInTransfer.changeTablePosition(cursorPosition.x(), cursorPosition.y(), scaleFactor)
         self.__isTableInTransfer = False
         self.__TableInTransfer = None
 
-    def updateTableInTransferPosition(self, cursorPosition):
-        self.__TableInTransfer.changeTablePosition(cursorPosition.x(), cursorPosition.y())
+    def updateTableInTransferPosition(self, cursorPosition, scaleFactor):
+        self.__TableInTransfer.changeTablePosition(cursorPosition.x(), cursorPosition.y(), scaleFactor)
 
-    def selectDrawTempTable(self, cursorPosition):
-        self.__TablesView.drawTempTable(cursorPosition)
+    def selectDrawTempTable(self, cursorPosition, scaleFactor):
+        self.__TablesView.drawTempTable(cursorPosition, scaleFactor)
 
     def selectDrawTables(self):
         self.__TablesView.drawTables()
@@ -124,3 +124,6 @@ class TablesController:
 
     def checkTableNameUnique(self, tableName):
         return self.__TablesModel.checkTableNameUnique(tableName)
+
+    def scaleTablesDimensions(self, scaleFactor):
+        self.__TablesModel.scaleTablesDimensions(scaleFactor)

@@ -8,10 +8,10 @@ class DrawingAreaView(QWidget):
         super().__init__()
         self.__DrawingAreaController = DrawingAreaController
         self.__DrawingAreaModel = DrawingAreaModel
-        self.setMinimumSize(self.__DrawingAreaModel.getStartMinimumWidth(),
-                            self.__DrawingAreaModel.getStartMinimumHeight())
-        self.setMaximumSize(self.__DrawingAreaModel.getStartMaximumWidth(),
-                            self.__DrawingAreaModel.getStartMaximumHeight())
+        self.setMinimumSize(self.__DrawingAreaModel.getBaseMinimumWidth(),
+                            self.__DrawingAreaModel.getBaseMinimumHeight())
+        self.setMaximumSize(self.__DrawingAreaModel.getBaseMaximumWidth(),
+                            self.__DrawingAreaModel.getBaseMaximumHeight())
         self.setMouseTracking(True)
 
     def setupUI(self):

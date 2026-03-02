@@ -10,8 +10,8 @@ class TablesView:
         self.__ParentWindow = ParentWindow
         self.drawTables()
 
-    def drawTempTable(self, position, width=100, rowsHeight=20, rowsNumber=5):
-        CreatedTable = TableModel(position.x(), position.y(), width, rowsHeight, rowsNumber, 0)
+    def drawTempTable(self, position, scaleFactor, width=100, rowsHeight=20, rowsNumber=5):
+        CreatedTable = TableModel(position.x(), position.y(), scaleFactor, width, rowsHeight, rowsNumber, 0)
         Painter = QPainter(self.__ParentWindow)
         Painter.setPen(QPen(QColor(Qt.GlobalColor.black), CreatedTable.getLineThickness(), Qt.PenStyle.SolidLine))
         self.__drawTable(Painter, CreatedTable)

@@ -46,7 +46,7 @@ class DrawingAreaController:
         self.__unselectCloseMainWindowWithoutConfirmation()
         if event.button() == Qt.MouseButton.LeftButton:
             if self.__MenuBarController.getCreateTableToolStatus():
-                self.__TablesController.addTable(self.__cursorPosition)
+                self.__TablesController.addTable(self.__cursorPosition, self.__DrawingAreaModel.getScaleFactor())
                 self.__MenuBarController.unselectCreateTableTool()
                 self.__updateDrawingAreaSize()
 
@@ -105,7 +105,8 @@ class DrawingAreaController:
                     self.__InheritancesController.unselectInheritanceBeingDrawn()
 
             elif self.__TablesController.getTableInTransferStatus():
-                self.__TablesController.unselectTableInTransfer(self.__cursorPosition)
+                self.__TablesController.unselectTableInTransfer(self.__cursorPosition,
+                                                                self.__DrawingAreaModel.getScaleFactor())
                 self.__updateDrawingAreaSize()
             elif self.__TablesController.getContextMenuAtWorkStatus():
                 self.__TablesController.unselectContextMenuAtWork()
@@ -177,20 +178,24 @@ class DrawingAreaController:
             self.resetScaleFactor()
 
     def handleWheelMove(self, event):
-        delta = event.angleDelta().y()
-        if delta > 0:
-            self.changeScaleFactor(True)
+        if event.modifiers() & Qt.ControlModifier:
+            delta = event.angleDelta().y()
+            if delta > 0:
+                self.changeScaleFactor(True)
+            else:
+                self.changeScaleFactor(False)
         else:
-            self.changeScaleFactor(False)
+            event.ignore()
 
     def handlePaintEvent(self):
+        if self.__TablesController.getTableInTransferStatus():
+            self.__TablesController.updateTableInTransferPosition(self.__cursorPosition,
+                                                                  self.__DrawingAreaModel.getScaleFactor())
         self.__RelationshipsController.selectDrawRelationships()
         self.__InheritancesController.selectDrawInheritances()
         self.__TablesController.selectDrawTables()
         if self.__MenuBarController.getCreateTableToolStatus():
-            self.__TablesController.selectDrawTempTable(self.__cursorPosition)
-        elif self.__TablesController.getTableInTransferStatus():
-            self.__TablesController.updateTableInTransferPosition(self.__cursorPosition)
+            self.__TablesController.selectDrawTempTable(self.__cursorPosition, self.__DrawingAreaModel.getScaleFactor())
         elif self.__RelationshipsController.getRelationshipBeingDrawnStatus():
             self.__RelationshipsController.selectDrawRelationshipBeingDrawn(self.__cursorPosition)
         elif self.__InheritancesController.getInheritanceBeingDrawnStatus():
@@ -207,7 +212,7 @@ class DrawingAreaController:
         self.__DrawingAreaView.setMinimumSize(self.__DrawingAreaModel.getActualMinimumWidth(),
                                               self.__DrawingAreaModel.getActualMinimumHeight())
 
-    def updateView(self):
+    def __updateView(self):
         self.__DrawingAreaView.update()
 
     def changeScaleFactor(self, isZoomIn):
@@ -215,10 +220,15 @@ class DrawingAreaController:
             self.__DrawingAreaModel.increaseScaleFactor()
         else:
             self.__DrawingAreaModel.decreaseScaleFactor()
-        print(self.__DrawingAreaModel.getScaleFactor())
+        self.__TablesController.scaleTablesDimensions(self.__DrawingAreaModel.getScaleFactor())
+        self.__updateDrawingAreaSize()
+        self.__updateView()
 
     def resetScaleFactor(self):
         self.__DrawingAreaModel.resetScaleFactor()
+        self.__TablesController.scaleTablesDimensions(self.__DrawingAreaModel.getScaleFactor())
+        self.__updateDrawingAreaSize()
+        self.__updateView()
 
     def unselectConnectionsBeingDrawn(self):
         self.__RelationshipsController.unselectRelationshipBeingDrawn()

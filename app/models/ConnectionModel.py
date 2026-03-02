@@ -6,7 +6,7 @@ from app.models.StructureModel import StructureModel
 
 class ConnectionModel(StructureModel):
     def __init__(self, FirstTable, SecondTable):
-        super().__init__(2, QColor(Qt.GlobalColor.black), 10)
+        super().__init__(2, 10, QColor(Qt.GlobalColor.black))
         self.FirstTable = FirstTable
         self.SecondTable = SecondTable
 

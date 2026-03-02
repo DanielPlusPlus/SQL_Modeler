@@ -8,8 +8,9 @@ class TablesModel:
         self.tables = []
         self.tableNumber = 1
 
-    def addTable(self, position, width=100, rowsHeight=20, minRowsNumber=5):
-        CreatedTable = TableModel(position.x(), position.y(), width, rowsHeight, minRowsNumber, self.tableNumber)
+    def addTable(self, position, scaleFactor, width=100, rowsHeight=20, minRowsNumber=5):
+        CreatedTable = TableModel(position.x(), position.y(), scaleFactor, width, rowsHeight, minRowsNumber,
+                                  self.tableNumber)
         self.tables.append(CreatedTable)
         self.tableNumber += 1
 
@@ -37,3 +38,7 @@ class TablesModel:
             if ObtainedTable.getTableName() == tableName:
                 return False
         return True
+
+    def scaleTablesDimensions(self, scaleFactor):
+        for ObtainedTable in self.tables:
+            ObtainedTable.scaleTableDimensions(scaleFactor)

@@ -1,8 +1,10 @@
 class StructureModel:
-    def __init__(self, lineThickness, color, fontSize):
-        self.__lineThickness = lineThickness
+    def __init__(self, lineThickness, fontSize, color):
+        self.__baseLineThickness = lineThickness
+        self.__baseFontSize = fontSize
+        self.__lineThickness = self.__baseLineThickness
+        self.__fontSize = self.__baseFontSize
         self.__color = color
-        self.__fontSize = fontSize
 
     def getLineThickness(self):
         return self.__lineThickness
@@ -21,3 +23,7 @@ class StructureModel:
 
     def changeFontSize(self, newFontSize):
         self.__fontSize = newFontSize
+
+    def scaleStructureDimensions(self, scaleFactor):
+        self.__lineThickness = max(1, int(self.__baseLineThickness * scaleFactor))
+        self.__fontSize = max(1, int(self.__baseFontSize * scaleFactor))

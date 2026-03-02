@@ -1,27 +1,27 @@
 class DrawingAreaModel:
     def __init__(self):
-        self.__START_MINIMUM_WIDTH = 400
-        self.__START_MINIMUM_HEIGHT = 400
-        self.__START_MAXIMUM_WIDTH = 800
-        self.__START_MAXIMUM_HEIGHT = 600
-        self.__DIMENSIONS_OFFSET = 50
-        self.__actualMinimumWidth = self.__START_MINIMUM_WIDTH
-        self.__actualMinimumHeight = self.__START_MINIMUM_HEIGHT
-        self.__actualMaximumWidth = self.__START_MAXIMUM_WIDTH
-        self.__actualMaximumHeight = self.__START_MAXIMUM_HEIGHT
+        self.__baseMinimumWidth = 400
+        self.__baseMinimumHeight = 400
+        self.__baseMaximumWidth = 800
+        self.__baseMaximumHeight = 600
+        self.__DimensionsOffset = 50
+        self.__actualMinimumWidth = self.__baseMinimumWidth
+        self.__actualMinimumHeight = self.__baseMinimumHeight
+        self.__actualMaximumWidth = self.__baseMaximumWidth
+        self.__actualMaximumHeight = self.__baseMaximumHeight
         self.__scaleFactor = 1.0
 
-    def getStartMinimumWidth(self):
-        return self.__START_MINIMUM_WIDTH
+    def getBaseMinimumWidth(self):
+        return self.__baseMinimumWidth
 
-    def getStartMinimumHeight(self):
-        return self.__START_MINIMUM_HEIGHT
+    def getBaseMinimumHeight(self):
+        return self.__baseMinimumHeight
 
-    def getStartMaximumWidth(self):
-        return self.__START_MAXIMUM_WIDTH
+    def getBaseMaximumWidth(self):
+        return self.__baseMaximumWidth
 
-    def getStartMaximumHeight(self):
-        return self.__START_MAXIMUM_HEIGHT
+    def getBaseMaximumHeight(self):
+        return self.__baseMaximumHeight
 
     def getActualMinimumWidth(self):
         return self.__actualMinimumWidth
@@ -39,16 +39,16 @@ class DrawingAreaModel:
         return self.__scaleFactor
 
     def changeMinimumDimensions(self, extremeTableRightDimension, extremeTableBottomDimension):
-        self.__actualMinimumWidth = max(self.__START_MINIMUM_WIDTH,
-                                        extremeTableRightDimension + self.__DIMENSIONS_OFFSET)
-        self.__actualMinimumHeight = max(self.__START_MINIMUM_HEIGHT,
-                                         extremeTableBottomDimension + self.__DIMENSIONS_OFFSET)
+        self.__actualMinimumWidth = max(self.__baseMinimumWidth,
+                                        extremeTableRightDimension + self.__DimensionsOffset)
+        self.__actualMinimumHeight = max(self.__baseMinimumHeight,
+                                         extremeTableBottomDimension + self.__DimensionsOffset)
 
     def changeMaximumDimensions(self, extremeTableRightDimension, extremeTableBottomDimension):
-        self.__actualMaximumWidth = max(self.__START_MAXIMUM_WIDTH,
-                                        extremeTableRightDimension + self.__DIMENSIONS_OFFSET)
-        self.__actualMaximumHeight = max(self.__START_MAXIMUM_HEIGHT,
-                                         extremeTableBottomDimension + self.__DIMENSIONS_OFFSET)
+        self.__actualMaximumWidth = max(self.__baseMaximumWidth,
+                                        extremeTableRightDimension + self.__DimensionsOffset)
+        self.__actualMaximumHeight = max(self.__baseMaximumHeight,
+                                         extremeTableBottomDimension + self.__DimensionsOffset)
 
     def increaseScaleFactor(self):
         self.__scaleFactor = min(2.0, round(self.__scaleFactor + 0.1, 1))
