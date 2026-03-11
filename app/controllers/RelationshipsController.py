@@ -76,29 +76,32 @@ class RelationshipsController(ConnectionsController):
     def getRelationshipBeingDrawnStatus(self):
         return self.__isRelationshipBeingDrawn
 
-    def add_1_1_Relationship(self):
+    def add_1_1_Relationship(self, scaleFactor):
         self.__setForeignKeys()
         if self.__isFirstSelectedColumnPK and self.__isSecondSelectedColumnPK:
             self.__RelationshipsModel.add_1_1_Relationship(self._FirstClickedTable, self._SecondClickedTable,
-                                                           self.__firstSelectedColumnName, self.__secondSelectedColumnName)
+                                                           self.__firstSelectedColumnName,
+                                                           self.__secondSelectedColumnName, scaleFactor)
         else:
             self.displayWrongRelationshipDialog()
         self.__resetSelections()
 
-    def add_1_n_Relationship(self):
+    def add_1_n_Relationship(self, scaleFactor):
         self.__setForeignKeys()
         if self.__isFirstSelectedColumnPK and not self.__isSecondSelectedColumnPK:
             self.__RelationshipsModel.add_1_n_Relationship(self._FirstClickedTable, self._SecondClickedTable,
-                                                           self.__firstSelectedColumnName, self.__secondSelectedColumnName)
+                                                           self.__firstSelectedColumnName,
+                                                           self.__secondSelectedColumnName, scaleFactor)
         else:
             self.displayWrongRelationshipDialog()
         self.__resetSelections()
 
-    def add_n_n_Relationship(self):
+    def add_n_n_Relationship(self, scaleFactor):
         self.__setForeignKeys()
         if self.__isFirstSelectedColumnPK and self.__isSecondSelectedColumnPK:
             self.__RelationshipsModel.add_n_n_Relationship(self._FirstClickedTable, self._SecondClickedTable,
-                                                           self.__firstSelectedColumnName, self.__secondSelectedColumnName)
+                                                           self.__firstSelectedColumnName,
+                                                           self.__secondSelectedColumnName, scaleFactor)
         else:
             self.displayWrongRelationshipDialog()
         self.__resetSelections()
@@ -123,8 +126,8 @@ class RelationshipsController(ConnectionsController):
             ColorChangeDialogControl = ColorChangeDialogController(ColorChangeDialog, ObtainedRelationship)
             ColorChangeDialog.displayDialog()
 
-    def selectDrawRelationshipBeingDrawn(self, cursorPosition):
-        self.__RelationshipsView.drawRelationshipBeingDrawn(self._FirstClickedTable, cursorPosition)
+    def selectDrawRelationshipBeingDrawn(self, cursorPosition, scaleFactor):
+        self.__RelationshipsView.drawRelationshipBeingDrawn(self._FirstClickedTable, cursorPosition, scaleFactor)
 
     def selectDrawRelationships(self):
         self.__RelationshipsView.drawRelationships()
@@ -158,3 +161,6 @@ class RelationshipsController(ConnectionsController):
 
     def getContextMenuAtWorkStatus(self):
         return self.__isContextMenuAtWork
+
+    def scaleRelationshipsDimensions(self, scaleFactor):
+        self.__RelationshipsModel.scaleRelationshipDimensions(scaleFactor)

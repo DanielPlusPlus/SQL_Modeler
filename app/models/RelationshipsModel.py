@@ -8,33 +8,39 @@ class RelationshipsModel:
     def __init__(self):
         self.__relationships = []
 
-    def add_1_1_Relationship(self, FirstTable, SecondTable, firstSelectedColumnName, secondSelectedColumnName):
+    def add_1_1_Relationship(self, FirstTable, SecondTable, firstSelectedColumnName, secondSelectedColumnName,
+                             scaleFactor):
         CreatedRelationship = RelationshipModel(
             FirstTable,
             SecondTable,
             firstSelectedColumnName,
             secondSelectedColumnName,
-            RelationshipsEnum.REL_1_1
+            RelationshipsEnum.REL_1_1,
+            scaleFactor
         )
         self.__relationships.append(CreatedRelationship)
 
-    def add_1_n_Relationship(self, FirstTable, SecondTable, firstSelectedColumnName, secondSelectedColumnName):
+    def add_1_n_Relationship(self, FirstTable, SecondTable, firstSelectedColumnName, secondSelectedColumnName,
+                             scaleFactor):
         CreatedRelationship = RelationshipModel(
             FirstTable,
             SecondTable,
             firstSelectedColumnName,
             secondSelectedColumnName,
-            RelationshipsEnum.REL_1_n
+            RelationshipsEnum.REL_1_n,
+            scaleFactor
         )
         self.__relationships.append(CreatedRelationship)
 
-    def add_n_n_Relationship(self, FirstTable, SecondTable, firstSelectedColumnName, secondSelectedColumnName):
+    def add_n_n_Relationship(self, FirstTable, SecondTable, firstSelectedColumnName, secondSelectedColumnName,
+                             scaleFactor):
         CreatedRelationship = RelationshipModel(
             FirstTable,
             SecondTable,
             firstSelectedColumnName,
             secondSelectedColumnName,
-            RelationshipsEnum.REL_n_n
+            RelationshipsEnum.REL_n_n,
+            scaleFactor
         )
         self.__relationships.append(CreatedRelationship)
 
@@ -65,3 +71,7 @@ class RelationshipsModel:
             if ObtainedRelationship.contains(QPoint(position.x(), position.y())):
                 return ObtainedRelationship
         return None
+
+    def scaleRelationshipDimensions(self, scaleFactor):
+        for ObtainedTable in self.__relationships:
+            ObtainedTable.scaleStructureDimensions(scaleFactor)

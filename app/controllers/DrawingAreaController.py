@@ -60,7 +60,7 @@ class DrawingAreaController:
                   is ConnectionsStatusEnum.IN_MOTION_AFTER_CLICK):
                 if self.__RelationshipsController.setSecondClickedTable(self.__cursorPosition):
                     if self.__RelationshipsController.setSecondSelectedColumnName():
-                        self.__RelationshipsController.add_1_1_Relationship()
+                        self.__RelationshipsController.add_1_1_Relationship(self.__DrawingAreaModel.getScaleFactor())
                         self.__MenuBarController.unselectCreate_1_1_RelTool()
                         self.__RelationshipsController.unselectRelationshipBeingDrawn()
 
@@ -74,7 +74,7 @@ class DrawingAreaController:
                   is ConnectionsStatusEnum.IN_MOTION_AFTER_CLICK):
                 if self.__RelationshipsController.setSecondClickedTable(self.__cursorPosition):
                     if self.__RelationshipsController.setSecondSelectedColumnName():
-                        self.__RelationshipsController.add_1_n_Relationship()
+                        self.__RelationshipsController.add_1_n_Relationship(self.__DrawingAreaModel.getScaleFactor())
                         self.__MenuBarController.unselectCreate_1_n_RelTool()
                         self.__RelationshipsController.unselectRelationshipBeingDrawn()
 
@@ -88,7 +88,7 @@ class DrawingAreaController:
                   is ConnectionsStatusEnum.IN_MOTION_AFTER_CLICK):
                 if self.__RelationshipsController.setSecondClickedTable(self.__cursorPosition):
                     if self.__RelationshipsController.setSecondSelectedColumnName():
-                        self.__RelationshipsController.add_n_n_Relationship()
+                        self.__RelationshipsController.add_n_n_Relationship(self.__DrawingAreaModel.getScaleFactor())
                         self.__MenuBarController.unselectCreate_n_n_RelTool()
                         self.__RelationshipsController.unselectRelationshipBeingDrawn()
 
@@ -100,7 +100,7 @@ class DrawingAreaController:
             elif (self.__MenuBarController.getCreateInheritanceToolStatus()
                   is ConnectionsStatusEnum.IN_MOTION_AFTER_CLICK):
                 if self.__InheritancesController.setSecondClickedTable(self.__cursorPosition):
-                    self.__InheritancesController.addInheritance()
+                    self.__InheritancesController.addInheritance(self.__DrawingAreaModel.getScaleFactor())
                     self.__MenuBarController.unselectCreateInheritanceTool()
                     self.__InheritancesController.unselectInheritanceBeingDrawn()
 
@@ -197,9 +197,9 @@ class DrawingAreaController:
         if self.__MenuBarController.getCreateTableToolStatus():
             self.__TablesController.selectDrawTempTable(self.__cursorPosition, self.__DrawingAreaModel.getScaleFactor())
         elif self.__RelationshipsController.getRelationshipBeingDrawnStatus():
-            self.__RelationshipsController.selectDrawRelationshipBeingDrawn(self.__cursorPosition)
+            self.__RelationshipsController.selectDrawRelationshipBeingDrawn(self.__cursorPosition, self.__DrawingAreaModel.getScaleFactor())
         elif self.__InheritancesController.getInheritanceBeingDrawnStatus():
-            self.__InheritancesController.selectDrawInheritanceBeingDrawn(self.__cursorPosition)
+            self.__InheritancesController.selectDrawInheritanceBeingDrawn(self.__cursorPosition, self.__DrawingAreaModel.getScaleFactor())
 
     def __updateDrawingAreaSize(self):
         extremeTableDimensions = self.__TablesController.getExtremeTableDimensions()
@@ -220,12 +220,16 @@ class DrawingAreaController:
             self.__DrawingAreaModel.increaseScaleFactor()
         else:
             self.__DrawingAreaModel.decreaseScaleFactor()
+        self.__RelationshipsController.scaleRelationshipsDimensions(self.__DrawingAreaModel.getScaleFactor())
+        self.__InheritancesController.scaleInheritancesDimensions(self.__DrawingAreaModel.getScaleFactor())
         self.__TablesController.scaleTablesDimensions(self.__DrawingAreaModel.getScaleFactor())
         self.__updateDrawingAreaSize()
         self.__updateView()
 
     def resetScaleFactor(self):
         self.__DrawingAreaModel.resetScaleFactor()
+        self.__RelationshipsController.scaleRelationshipsDimensions(self.__DrawingAreaModel.getScaleFactor())
+        self.__InheritancesController.scaleInheritancesDimensions(self.__DrawingAreaModel.getScaleFactor())
         self.__TablesController.scaleTablesDimensions(self.__DrawingAreaModel.getScaleFactor())
         self.__updateDrawingAreaSize()
         self.__updateView()

@@ -18,7 +18,8 @@ class RelationshipsView:
         painter.setRenderHint(QPainter.Antialiasing)
 
         for rel in self.RelationshipsModel.getRelationships():
-            painter.setPen(QPen(QColor(rel.getColor()), rel.getLineThickness(), Qt.PenStyle.SolidLine))
+            line_thickness = rel.getLineThickness()
+            painter.setPen(QPen(QColor(rel.getColor()), line_thickness, Qt.PenStyle.SolidLine))
             first_rect = rel.FirstTable.getRectangle()
             second_rect = rel.SecondTable.getRectangle()
 
@@ -27,9 +28,15 @@ class RelationshipsView:
 
             painter.drawLine(start, end)
 
-            self.drawRelationshipSymbol(painter, start, end, rel.getRelationshipType())
+            self.drawRelationshipSymbol(painter, start, end, rel.getRelationshipType(), line_thickness)
 
         painter.end()
+
+    def __getSymbolDimensions(self, line_thickness):
+        bar_size = 4 * line_thickness
+        crows_foot_length = 8 * line_thickness
+        offset_distance = 8 * line_thickness
+        return bar_size, crows_foot_length, offset_distance
 
     def edgePoint(self, start_rect, end_rect):
         center_start = start_rect.center()
@@ -50,8 +57,9 @@ class RelationshipsView:
 
         return QPoint(x, y)
 
-    def drawRelationshipSymbol(self, painter, start: QPoint, end: QPoint, rel_type: str):
+    def drawRelationshipSymbol(self, painter, start: QPoint, end: QPoint, rel_type: str, line_thickness: float = 1):
         angle = math.atan2(end.y() - start.y(), end.x() - start.x())
+        bar_size, crows_foot_length, offset_distance = self.__getSymbolDimensions(line_thickness)
 
         def offset_point(point: QPoint, angle: float, distance: float) -> QPointF:
             return QPointF(
@@ -60,10 +68,9 @@ class RelationshipsView:
             )
 
         def draw_bar(point, offset=0):
-            size = 6
             perp = angle + math.pi / 2
-            dx = size * math.cos(perp)
-            dy = size * math.sin(perp)
+            dx = bar_size * math.cos(perp)
+            dy = bar_size * math.sin(perp)
             ox = offset * math.cos(angle)
             oy = offset * math.sin(angle)
             x = point.x() + ox
@@ -74,29 +81,27 @@ class RelationshipsView:
 
         def draw_crows_foot(point, flip=False):
             spread = 0.4
-            length = 12
             base_angle = angle + math.pi if flip else angle
             for a in [-spread, 0, spread]:
-                dx = length * math.cos(base_angle + a)
-                dy = length * math.sin(base_angle + a)
+                dx = crows_foot_length * math.cos(base_angle + a)
+                dy = crows_foot_length * math.sin(base_angle + a)
                 painter.drawLine(point, QPointF(point.x() + dx, point.y() + dy))
 
-        offset_distance = 12
-
         if rel_type is RelationshipsEnum.REL_1_1:
-            draw_bar(offset_point(start, angle, -offset_distance), offset=12)
-            draw_bar(offset_point(end, angle, offset_distance), offset=-12)
+            draw_bar(offset_point(start, angle, -offset_distance), offset=offset_distance)
+            draw_bar(offset_point(end, angle, offset_distance), offset=-offset_distance)
         elif rel_type is RelationshipsEnum.REL_1_n:
-            draw_bar(offset_point(start, angle, -offset_distance), offset=12)
+            draw_bar(offset_point(start, angle, -offset_distance), offset=offset_distance)
             draw_crows_foot(offset_point(end, angle, offset_distance))
         elif rel_type is RelationshipsEnum.REL_n_n:
             draw_crows_foot(offset_point(start, angle, -offset_distance), flip=True)
             draw_crows_foot(offset_point(end, angle, offset_distance))
 
-    def drawRelationshipBeingDrawn(self, FirstTable, cursorPosition):
-        CreatedRelationship = RelationshipModel(FirstTable, None, None, None, None)
+    def drawRelationshipBeingDrawn(self, FirstTable, cursorPosition, scaleFactor):
+        CreatedRelationship = RelationshipModel(FirstTable, None, None, None, None, scaleFactor)
         painter = QPainter(self.ParentWindow)
-        painter.setPen(QPen(QColor(Qt.GlobalColor.black), CreatedRelationship.getLineThickness(), Qt.PenStyle.DashLine))
+        painter.setPen(QPen(QColor(CreatedRelationship.getColor()), CreatedRelationship.getLineThickness(),
+                            Qt.PenStyle.DashLine))
         painter.setRenderHint(QPainter.Antialiasing)
 
         first_rect = FirstTable.getRectangle()

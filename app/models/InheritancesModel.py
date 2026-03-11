@@ -7,8 +7,8 @@ class InheritancesModel:
     def __init__(self):
         self.__inheritances = []
 
-    def addInheritance(self, FirstTable, SecondTable):
-        CreatedInheritance = InheritanceModel(FirstTable, SecondTable)
+    def addInheritance(self, FirstTable, SecondTable, scaleFactor):
+        CreatedInheritance = InheritanceModel(FirstTable, SecondTable, scaleFactor)
         self.__inheritances.append(CreatedInheritance)
 
     def addInheritanceModel(self, inheritance: InheritanceModel):
@@ -38,3 +38,7 @@ class InheritancesModel:
             if ObtainedInheritance.contains(QPoint(position.x(), position.y())):
                 return ObtainedInheritance
         return None
+
+    def scaleInheritancesDimensions(self, scaleFactor):
+        for ObtainedTable in self.__inheritances:
+            ObtainedTable.scaleStructureDimensions(scaleFactor)

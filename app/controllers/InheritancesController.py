@@ -24,8 +24,8 @@ class InheritancesController(ConnectionsController):
     def getInheritanceBeingDrawnStatus(self):
         return self.__isInheritanceBeingDrawn
 
-    def addInheritance(self):
-        self.__InheritancesModel.addInheritance(self._FirstClickedTable, self._SecondClickedTable)
+    def addInheritance(self, scaleFactor):
+        self.__InheritancesModel.addInheritance(self._FirstClickedTable, self._SecondClickedTable, scaleFactor)
         self.resetTables()
 
     def changeInheritanceColor(self, cursorPosition):
@@ -48,8 +48,8 @@ class InheritancesController(ConnectionsController):
     def deleteInheritanceByTable(self, ObtainedTable):
         self.__InheritancesModel.deleteInheritanceByTable(ObtainedTable)
 
-    def selectDrawInheritanceBeingDrawn(self, cursorPosition):
-        self.__InheritancesView.drawInheritanceBeingDrawn(self._FirstClickedTable, cursorPosition)
+    def selectDrawInheritanceBeingDrawn(self, cursorPosition, scaleFactor):
+        self.__InheritancesView.drawInheritanceBeingDrawn(self._FirstClickedTable, cursorPosition, scaleFactor)
 
     def selectDrawInheritances(self):
         self.__InheritancesView.drawInheritances()
@@ -77,4 +77,7 @@ class InheritancesController(ConnectionsController):
 
     def getContextMenuAtWorkStatus(self):
         return self.__isContextMenuAtWork
+
+    def scaleInheritancesDimensions(self, scaleFactor):
+        self.__InheritancesModel.scaleInheritancesDimensions(scaleFactor)
 

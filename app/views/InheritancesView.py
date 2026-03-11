@@ -4,6 +4,7 @@ from PySide6.QtCore import Qt, QPoint, QPointF
 
 from app.models.InheritanceModel import InheritanceModel
 
+
 class InheritancesView:
     def __init__(self, InheritanceModel, ParentWindow):
         self.__InheritanceModel = InheritanceModel
@@ -15,14 +16,15 @@ class InheritancesView:
         painter.setRenderHint(QPainter.Antialiasing)
 
         for inheritance in self.__InheritanceModel.getInheritances():
-            painter.setPen(QPen(QColor(inheritance.getColor()), inheritance.getLineThickness(), Qt.SolidLine))
+            line_thickness = inheritance.getLineThickness()
+            painter.setPen(QPen(QColor(inheritance.getColor()), line_thickness, Qt.SolidLine))
             child_rect = inheritance.FirstTable.getRectangle()
             parent_rect = inheritance.SecondTable.getRectangle()
 
             start = self.edgePoint(child_rect, parent_rect)
             arrow_tip = self.edgePoint(parent_rect, child_rect)
 
-            cutoff_distance = 16
+            arrow_length, cutoff_distance = self.__getArrowDimensions(line_thickness)
             angle = math.atan2(arrow_tip.y() - start.y(), arrow_tip.x() - start.x())
             line_end = QPointF(
                 arrow_tip.x() - cutoff_distance * math.cos(angle),
@@ -30,14 +32,17 @@ class InheritancesView:
             )
 
             painter.drawLine(start, line_end)
-
-            self.drawInheritanceArrow(painter, arrow_tip, angle)
+            self.drawInheritanceArrow(painter, arrow_tip, angle, line_thickness)
 
         painter.end()
 
-    def drawInheritanceArrow(self, painter, tip: QPoint, angle: float):
-        arrow_length = 16
-        arrow_width = 10
+    def __getArrowDimensions(self, line_thickness):
+        arrow_length = 8 * line_thickness
+        cutoff_distance = arrow_length
+        return arrow_length, cutoff_distance
+
+    def drawInheritanceArrow(self, painter, tip: QPoint, angle: float, line_thickness: float = 1):
+        arrow_length, _ = self.__getArrowDimensions(line_thickness)
 
         left_angle = angle + math.radians(30)
         right_angle = angle - math.radians(30)
@@ -75,10 +80,10 @@ class InheritancesView:
 
         return QPoint(x, y)
 
-    def drawInheritanceBeingDrawn(self, FirstTable, cursorPosition):
-        CreatedInheritance = InheritanceModel(FirstTable, None)
+    def drawInheritanceBeingDrawn(self, FirstTable, cursorPosition, scaleFactor):
+        CreatedInheritance = InheritanceModel(FirstTable, None, scaleFactor)
         painter = QPainter(self.__ParentWindow)
-        painter.setPen(QPen(QColor(Qt.GlobalColor.black), 2, Qt.DashLine))
+        painter.setPen(QPen(QColor(Qt.GlobalColor.black), CreatedInheritance.getLineThickness(), Qt.DashLine))
         painter.setRenderHint(QPainter.Antialiasing)
 
         first_rect = FirstTable.getRectangle()
