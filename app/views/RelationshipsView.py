@@ -13,6 +13,11 @@ class RelationshipsView:
         self.ParentWindow = ParentWindow
         self.drawRelationships()
 
+    def __getTableRect(self, table):
+        if table.getTableCollapseStatus():
+            return table.getTitleRectangle()
+        return table.getRectangle()
+
     def drawRelationships(self):
         painter = QPainter(self.ParentWindow)
         painter.setRenderHint(QPainter.Antialiasing)
@@ -20,8 +25,8 @@ class RelationshipsView:
         for rel in self.RelationshipsModel.getRelationships():
             line_thickness = rel.getLineThickness()
             painter.setPen(QPen(QColor(rel.getColor()), line_thickness, Qt.PenStyle.SolidLine))
-            first_rect = rel.FirstTable.getRectangle()
-            second_rect = rel.SecondTable.getRectangle()
+            first_rect = self.__getTableRect(rel.FirstTable)
+            second_rect = self.__getTableRect(rel.SecondTable)
 
             start = self.edgePoint(first_rect, second_rect)
             end = self.edgePoint(second_rect, first_rect)
@@ -104,7 +109,7 @@ class RelationshipsView:
                             Qt.PenStyle.DashLine))
         painter.setRenderHint(QPainter.Antialiasing)
 
-        first_rect = FirstTable.getRectangle()
+        first_rect = self.__getTableRect(FirstTable)
         start = self.edgePoint2(first_rect, cursorPosition)
 
         end = cursorPosition if isinstance(cursorPosition, QPoint) else QPoint(cursorPosition.x(), cursorPosition.y())

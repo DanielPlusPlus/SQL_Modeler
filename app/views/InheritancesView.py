@@ -11,6 +11,11 @@ class InheritancesView:
         self.__ParentWindow = ParentWindow
         self.drawInheritances()
 
+    def __getTableRect(self, table):
+        if table.getTableCollapseStatus():
+            return table.getTitleRectangle()
+        return table.getRectangle()
+
     def drawInheritances(self):
         painter = QPainter(self.__ParentWindow)
         painter.setRenderHint(QPainter.Antialiasing)
@@ -18,8 +23,8 @@ class InheritancesView:
         for inheritance in self.__InheritanceModel.getInheritances():
             line_thickness = inheritance.getLineThickness()
             painter.setPen(QPen(QColor(inheritance.getColor()), line_thickness, Qt.SolidLine))
-            child_rect = inheritance.FirstTable.getRectangle()
-            parent_rect = inheritance.SecondTable.getRectangle()
+            child_rect = self.__getTableRect(inheritance.FirstTable)
+            parent_rect = self.__getTableRect(inheritance.SecondTable)
 
             start = self.edgePoint(child_rect, parent_rect)
             arrow_tip = self.edgePoint(parent_rect, child_rect)
@@ -86,7 +91,7 @@ class InheritancesView:
         painter.setPen(QPen(QColor(Qt.GlobalColor.black), CreatedInheritance.getLineThickness(), Qt.DashLine))
         painter.setRenderHint(QPainter.Antialiasing)
 
-        first_rect = FirstTable.getRectangle()
+        first_rect = self.__getTableRect(FirstTable)
         start = self.edgePointToPoint(first_rect, cursorPosition)
 
         end = cursorPosition if isinstance(cursorPosition, QPoint) else QPoint(cursorPosition.x(), cursorPosition.y())

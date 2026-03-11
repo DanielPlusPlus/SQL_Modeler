@@ -151,5 +151,3 @@ class TableModel(StructureModel):
             if self.__Rectangle.contains(point):
                 return True
         return False
-
-
