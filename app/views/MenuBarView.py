@@ -9,13 +9,18 @@ class MenuBarView(QMenuBar):
 
     def setupUI(self):
         self.__menuFile = QMenu(u"File", self)
+        self.__menuImportSQL = QMenu(u"Import SQL File", self)
         self.__menuView = QMenu(u"View", self)
         self.__menuTables = QMenu(u"Tables", self)
         self.__menuConnections = QMenu(u"Connections", self)
         self.__menuRelationships = QMenu(u"Relationships", self)
         self.__menuRelationships.setIcon(QIcon("app\\icons\\relationship.png"))
 
-        self.actionImportSQL = QAction(u"Import SQL File", self)
+        self.actionImportOracleSQL = QAction(u"Import Oracle SQL File", self)
+        self.actionImportMySQL = QAction(u"Import MySQL File", self)
+        self.actionImportMicrosoftSQL = QAction(u"Import MicrosoftSQL File", self)
+        self.actionImportPostgreSQL = QAction(u"Import PostgreSQL File", self)
+
         self.actionExportDiagram = QAction(u"Export Diagram", self)
         self.actionGenerateSQL = QAction(u"Generate SQL Code", self)
         self.actionQuit = QAction(u"Quit", self)
@@ -33,7 +38,11 @@ class MenuBarView(QMenuBar):
         self.actionCreateInheritance = QAction(QIcon("app\\icons\\inheritance.png"),
                                                u"Create Inheritance Relationship", self)
 
-        self.__menuFile.addAction(self.actionImportSQL)
+        self.__menuFile.addMenu(self.__menuImportSQL)
+        self.__menuImportSQL.addAction(self.actionImportOracleSQL)
+        self.__menuImportSQL.addAction(self.actionImportMySQL)
+        self.__menuImportSQL.addAction(self.actionImportMicrosoftSQL)
+        self.__menuImportSQL.addAction(self.actionImportPostgreSQL)
         self.__menuFile.addAction(self.actionExportDiagram)
         self.__menuFile.addAction(self.actionGenerateSQL)
         self.__menuFile.addAction(self.actionQuit)

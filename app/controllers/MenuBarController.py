@@ -14,7 +14,10 @@ class MenuBarController:
         self.__is_1_n_RelSelected = ConnectionsStatusEnum.NOT_IN_MOTION
         self.__is_n_n_RelSelected = ConnectionsStatusEnum.NOT_IN_MOTION
         self.__isInheritanceSelected = ConnectionsStatusEnum.NOT_IN_MOTION
-        MenuBarView.actionImportSQL.triggered.connect(self.__selectImportSQL)
+        MenuBarView.actionImportOracleSQL.triggered.connect(self.__selectImportSQL)
+        MenuBarView.actionImportMySQL.triggered.connect(self.__selectImportSQL)
+        MenuBarView.actionImportMicrosoftSQL.triggered.connect(self.__selectImportSQL)
+        MenuBarView.actionImportPostgreSQL.triggered.connect(self.__selectImportSQL)
         MenuBarView.actionExportDiagram.triggered.connect(self.selectExportDiagramTool)
         MenuBarView.actionGenerateSQL.triggered.connect(self.selectGenerateSQLTool)
         MenuBarView.actionQuit.triggered.connect(self.__selectQuit)
@@ -132,4 +135,3 @@ class MenuBarController:
         self.__is_1_n_RelSelected = ConnectionsStatusEnum.NOT_IN_MOTION
         self.__is_n_n_RelSelected = ConnectionsStatusEnum.NOT_IN_MOTION
         self.__isInheritanceSelected = ConnectionsStatusEnum.NOT_IN_MOTION
-

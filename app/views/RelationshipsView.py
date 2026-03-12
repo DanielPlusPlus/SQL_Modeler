@@ -1,7 +1,7 @@
 import math
 
-from PySide6.QtGui import QPainter, QPen, QColor
-from PySide6.QtCore import Qt, QPoint, QPointF
+from PySide6.QtGui import QPainter, QPen, QColor, QFont
+from PySide6.QtCore import Qt, QPoint, QPointF, QRectF
 
 from app.models.RelationshipModel import RelationshipModel
 from app.enums.RelationshipsEnum import RelationshipsEnum
@@ -34,8 +34,38 @@ class RelationshipsView:
             painter.drawLine(start, end)
 
             self.drawRelationshipSymbol(painter, start, end, rel.getRelationshipType(), line_thickness)
+            self.drawColumnLabels(painter, start, end, rel, line_thickness)
 
         painter.end()
+
+    def drawColumnLabels(self, painter, start: QPoint, end: QPoint, rel, line_thickness: float):
+        first_col = rel.getFirstSelectedColumnName()
+        second_col = rel.getSecondSelectedColumnName()
+
+        if not first_col and not second_col:
+            return
+
+        angle = math.atan2(end.y() - start.y(), end.x() - start.x())
+        perp = angle + math.pi / 2
+
+        label_offset = 8 * line_thickness
+        along_offset = 16 * line_thickness
+
+        font = QFont("Sans", rel.getFontSize())
+        font.setBold(True)
+        painter.setFont(font)
+        painter.setPen(QPen(QColor("#333333"), 1))
+
+        def draw_label(point: QPoint, text: str, direction: float):
+            lx = point.x() + direction * along_offset * math.cos(angle) + label_offset * math.cos(perp)
+            ly = point.y() + direction * along_offset * math.sin(angle) + label_offset * math.sin(perp)
+            label_rect = QRectF(lx - 60, ly - 10, 120, 20)
+            painter.drawText(label_rect, Qt.AlignCenter, text)
+
+        if first_col:
+            draw_label(start, first_col, +1)
+        if second_col:
+            draw_label(end, second_col, -1)
 
     def __getSymbolDimensions(self, line_thickness):
         bar_size = 4 * line_thickness
