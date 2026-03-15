@@ -56,6 +56,7 @@ class GenerateSQLDialogController:
                 ErrorDialog.displayDialog()
 
     def __selectTestCode(self):
+        print(self.__GenerateSQLDialogView.TabWidget.currentIndex())
         OracleConnectionParamsDialog = OracleConnectionParamsDialogView(self.__ParentWindow)
         OracleConnectionParamsDialog.setupUI()
         OracleConnectionParamsControl = OracleConnectionParamsDialogController(OracleConnectionParamsDialog)

@@ -5,7 +5,7 @@ from PySide6.QtGui import QColor
 class ColorChangeDialogView(QColorDialog):
     def __init__(self, ParentWindow):
         super().__init__(ParentWindow)
-        self.__customColors = [
+        self.__customColors = (
             "#FFFF99",
             "#99FF99",
             "#99CCFF",
@@ -14,7 +14,7 @@ class ColorChangeDialogView(QColorDialog):
             "#FF99CC",
             "#99FFCC",
             "#CCCCCC"
-        ]
+        )
 
     def setupUi(self):
         if not self.objectName():

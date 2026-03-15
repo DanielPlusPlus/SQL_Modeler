@@ -12,7 +12,7 @@ class EditTableDialogView(QDialog):
         super().__init__(ParentWindow)
         self.__ObtainedTable = ObtainedTable
         self.__regex = QRegularExpression(r'^[A-Za-z_][A-Za-z0-9_$#\s]*$')
-        self.__dataTypes = ["NUMBER", "FLOAT", "CHAR", "VARCHAR2", "NCHAR", "NVARCHAR2", "DATE", "CLOB", "BLOB"]
+        self.__dataTypes = ("NUMBER", "FLOAT", "CHAR", "VARCHAR2", "NCHAR", "NVARCHAR2", "DATE", "CLOB", "BLOB")
 
     def setupUi(self):
         if not self.objectName():

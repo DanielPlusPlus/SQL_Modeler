@@ -7,8 +7,8 @@ from app.views.widgets.LineNumberArea import LineNumberArea
 
 
 class CodeEditor(QPlainTextEdit):
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self, ParentWindow=None):
+        super().__init__(ParentWindow)
 
         font = QFont("Courier", 10)
         self.setFont(font)

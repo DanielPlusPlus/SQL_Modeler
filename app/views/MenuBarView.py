@@ -18,7 +18,7 @@ class MenuBarView(QMenuBar):
 
         self.actionImportOracleSQL = QAction(u"Import Oracle SQL File", self)
         self.actionImportMySQL = QAction(u"Import MySQL File", self)
-        self.actionImportMicrosoftSQL = QAction(u"Import MicrosoftSQL File", self)
+        self.actionImportMSServerSQL = QAction(u"Import Microsoft Server SQL File", self)
         self.actionImportPostgreSQL = QAction(u"Import PostgreSQL File", self)
 
         self.actionExportDiagram = QAction(u"Export Diagram", self)
@@ -41,7 +41,7 @@ class MenuBarView(QMenuBar):
         self.__menuFile.addMenu(self.__menuImportSQL)
         self.__menuImportSQL.addAction(self.actionImportOracleSQL)
         self.__menuImportSQL.addAction(self.actionImportMySQL)
-        self.__menuImportSQL.addAction(self.actionImportMicrosoftSQL)
+        self.__menuImportSQL.addAction(self.actionImportMSServerSQL)
         self.__menuImportSQL.addAction(self.actionImportPostgreSQL)
         self.__menuFile.addAction(self.actionExportDiagram)
         self.__menuFile.addAction(self.actionGenerateSQL)

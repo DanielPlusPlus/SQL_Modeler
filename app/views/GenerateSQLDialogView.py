@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QDialog, QGridLayout, QHBoxLayout, QLabel, QPushButton, QWidget
 
-from app.views.widgets.CodeEditor import CodeEditor
+from app.views.widgets.TabWidget import TabWidget
 
 
 class GenerateSQLDialogView(QDialog):
@@ -22,16 +22,16 @@ class GenerateSQLDialogView(QDialog):
         self.__gridLayout.addLayout(self.__horizontalLayout, 0, 0, 1, 1)
 
         self.__horizontalLayout_2 = QHBoxLayout()
-        self.SQLCodeTextEdit = CodeEditor(self)
-        self.SQLCodeTextEdit.setReadOnly(True)
-        self.SQLCodeTextEdit.setPlainText(SQLCode)
-        self.__horizontalLayout_2.addWidget(self.SQLCodeTextEdit)
+        self.TabWidget = TabWidget(SQLCode, self)
+
+        self.__horizontalLayout_2.addWidget(self.TabWidget)
         self.__gridLayout.addLayout(self.__horizontalLayout_2, 1, 0, 1, 1)
 
         self.__horizontalLayout_3 = QHBoxLayout()
         self.copyCodeButton = QPushButton(u"Copy The Code", self)
         self.saveCodeButton = QPushButton(u"Save The Code", self)
-        self.testCodeButton = QPushButton(u"Test The Code In Oracle", self)
+        self.testCodeButton = QPushButton(u"Test The Code", self)
+
         self.__horizontalLayout_3.addWidget(self.copyCodeButton)
         self.__horizontalLayout_3.addWidget(self.saveCodeButton)
         self.__horizontalLayout_3.addWidget(self.testCodeButton)
