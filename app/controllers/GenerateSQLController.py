@@ -15,7 +15,8 @@ class GenerateSQLController:
         sqlCode = self.__generateSQLCode()
         GenerateSQLDialog = GenerateSQLDialogView(self.__ParentWindow)
         GenerateSQLDialog.setupUI(sqlCode)
-        GenerateSQLControl = GenerateSQLDialogController(self.__ParentWindow, self.__MainWindowController, GenerateSQLDialog)
+        GenerateSQLControl = GenerateSQLDialogController(self.__ParentWindow, self.__MainWindowController,
+                                                         GenerateSQLDialog)
         GenerateSQLDialog.displayDialog()
 
     def __generateSQLCode(self):

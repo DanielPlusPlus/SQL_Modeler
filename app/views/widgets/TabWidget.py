@@ -1,13 +1,14 @@
 from PySide6.QtWidgets import QTabWidget
 
 from app.views.widgets.CodeEditor import CodeEditor
+from app.enums.DatabasesEnum import DatabasesEnum
 
 
 class TabWidget(QTabWidget):
     def __init__(self, SQLCode, ParentWindow=None):
         super().__init__(ParentWindow)
         self.__SQLCode = SQLCode
-        self.__tabsLabels = (u"Oracle SQL", u"MySQL", u"Microsoft Server SQL", u"PostgreSQL")
+        self.__tabsLabels = (database.value for database in DatabasesEnum)
         self.addTabs()
 
     def addTabs(self):

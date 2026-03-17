@@ -1,10 +1,14 @@
 import oracledb
+from typing import override
+
+from app.controllers.interfaces.DatabaseControllerInterface import DatabaseControllerInterface
 
 
-class OracleDatabaseController:
+class OracleDatabaseController(DatabaseControllerInterface):
     def __init__(self, username, password, host, port, serviceName):
         self.__connectStr = f"{username}/{password}@{host}:{port}/{serviceName}"
 
+    @override
     def executeSQLCode(self, sqlCode):
         connection = None
         messages = []
