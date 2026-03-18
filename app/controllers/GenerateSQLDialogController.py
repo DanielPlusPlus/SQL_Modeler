@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QFileDialog, QDialog
 
 from app.views.InfoDialogView import InfoDialogView
 from app.views.ErrorDialogView import ErrorDialogView
-from app.views.OracleConnectionParamsDialogView import OracleConnectionParamsDialogView
+from app.views.MySQLConnectionParamsDialogView import MySQLConnectionParamsDialogView
 from app.views.ExecutionSQLDialogView import ExecutionSQLDialogView
 from app.controllers.OracleConnectionParamsDialogController import OracleConnectionParamsDialogController
 from app.controllers.OracleDatabaseController import OracleDatabaseController
@@ -57,7 +57,7 @@ class GenerateSQLDialogController:
 
     def __selectTestCode(self):
         print(self.__GenerateSQLDialogView.TabWidget.currentIndex())
-        OracleConnectionParamsDialog = OracleConnectionParamsDialogView(self.__ParentWindow)
+        OracleConnectionParamsDialog = MySQLConnectionParamsDialogView(self.__ParentWindow)
         OracleConnectionParamsDialog.setupUI()
         OracleConnectionParamsControl = OracleConnectionParamsDialogController(OracleConnectionParamsDialog)
         if OracleConnectionParamsDialog.displayDialog() == QDialog.Accepted:

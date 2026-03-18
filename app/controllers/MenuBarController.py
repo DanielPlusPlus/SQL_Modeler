@@ -16,7 +16,7 @@ class MenuBarController:
         self.__isInheritanceSelected = ConnectionsStatusEnum.NOT_IN_MOTION
         MenuBarView.actionImportOracleSQL.triggered.connect(self.__selectImportSQL)
         MenuBarView.actionImportMySQL.triggered.connect(self.__selectImportSQL)
-        MenuBarView.actionImportMSServerSQL.triggered.connect(self.__selectImportSQL)
+        MenuBarView.actionImportMSSSQL.triggered.connect(self.__selectImportSQL)
         MenuBarView.actionImportPostgreSQL.triggered.connect(self.__selectImportSQL)
         MenuBarView.actionExportDiagram.triggered.connect(self.selectExportDiagramTool)
         MenuBarView.actionGenerateSQL.triggered.connect(self.selectGenerateSQLTool)
