@@ -6,12 +6,12 @@ from app.controllers.interfaces.DatabaseControllerInterface import DatabaseContr
 
 
 class PostgreSQLDatabaseController(DatabaseControllerInterface):
-    def __init__(self, username, password, host, port, database):
-        self.__username = username
-        self.__password = password
-        self.__host = host
-        self.__port = port
-        self.__database = database
+    def __init__(self, params):
+        self.__username = params["username"]
+        self.__password = params["password"]
+        self.__host = params["host"]
+        self.__port = params["port"]
+        self.__database = params["database"]
 
     @override
     def executeSQLCode(self, sqlCode):
@@ -36,14 +36,17 @@ class PostgreSQLDatabaseController(DatabaseControllerInterface):
                     cursor.execute(statement)
                     messages.append(f"Executed:\n{statement}")
                 except psycopg2.DatabaseError as e:
-                    error_message = str(e)
-                    messages.append(f"ERROR in statement:\n{statement}\n{error_message}")
+                    errorMessage = str(e)
+                    messages.append(f"ERROR in statement:\n{statement}\n{errorMessage}")
 
             connection.commit()
             messages.append("All changes committed.")
 
         except OperationalError as e:
             messages.append(f"Connection or general error:\n{str(e)}")
+
+        except Exception as e:
+            messages.append(f"An unexpected error occurred:\n{str(e)}")
 
         finally:
             if connection is not None:

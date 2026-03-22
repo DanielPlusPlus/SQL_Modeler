@@ -1,13 +1,14 @@
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtWidgets import QFileDialog, QDialog
 
+from app.views.patterns.ConnectionParamsDialogViewsFactory import ConnectionParamsDialogViewsFactory
 from app.views.InfoDialogView import InfoDialogView
 from app.views.ErrorDialogView import ErrorDialogView
-from app.views.MySQLConnectionParamsDialogView import MySQLConnectionParamsDialogView
 from app.views.ExecutionSQLDialogView import ExecutionSQLDialogView
-from app.controllers.OracleConnectionParamsDialogController import OracleConnectionParamsDialogController
-from app.controllers.OracleDatabaseController import OracleDatabaseController
+from app.controllers.patterns.ConnectionParamsDialogControllersFactory import ConnectionParamsDialogControllersFactory
+from app.controllers.patterns.DatabaseControllersFactory import DatabaseControllersFactory
 from app.controllers.ExecutionSQLDialogController import ExecutionSQLDialogController
+from app.enums.DatabasesEnum import DatabasesEnum
 
 
 class GenerateSQLDialogController:
@@ -24,7 +25,7 @@ class GenerateSQLDialogController:
 
     def __selectCopyCode(self):
         clipboard = QGuiApplication.clipboard()
-        sqlCode = self.__GenerateSQLDialogView.SQLCodeTextEdit.toPlainText()
+        sqlCode = self.__getSelectedSQLCode()
 
         clipboard.setText(sqlCode)
 
@@ -41,7 +42,7 @@ class GenerateSQLDialogController:
         )
         if filePath:
             try:
-                sqlCode = self.__GenerateSQLDialogView.SQLCodeTextEdit.toPlainText()
+                sqlCode = self.__getSelectedSQLCode()
                 with open(filePath, 'w', encoding='utf-8') as file:
                     file.write(sqlCode)
                     dialogTitle = "INFORMATION"
@@ -56,21 +57,15 @@ class GenerateSQLDialogController:
                 ErrorDialog.displayDialog()
 
     def __selectTestCode(self):
-        print(self.__GenerateSQLDialogView.TabWidget.currentIndex())
-        OracleConnectionParamsDialog = MySQLConnectionParamsDialogView(self.__ParentWindow)
-        OracleConnectionParamsDialog.setupUI()
-        OracleConnectionParamsControl = OracleConnectionParamsDialogController(OracleConnectionParamsDialog)
-        if OracleConnectionParamsDialog.displayDialog() == QDialog.Accepted:
-            params = OracleConnectionParamsControl.getConnectionParams()
-            sqlCode = self.__GenerateSQLDialogView.SQLCodeTextEdit.toPlainText()
-
-            OracleDatabaseControl = OracleDatabaseController(
-                params["username"],
-                params["password"],
-                params["host"],
-                params["port"],
-                params["serviceName"]
-            )
+        DatabaseType = self.__getSelectedDatabaseType()
+        ConnectionParamsDialog = ConnectionParamsDialogViewsFactory.createController(self.__ParentWindow,
+                                                                                     DatabaseType)
+        ConnectionParamsDialog.setupUI()
+        ConnectionParamsControl = ConnectionParamsDialogControllersFactory.createController(ConnectionParamsDialog,
+                                                                                            DatabaseType)
+        if ConnectionParamsDialog.displayDialog() == QDialog.Accepted:
+            connectionParams = ConnectionParamsControl.getConnectionParams()
+            sqlCode = self.__getSelectedSQLCode()
 
             if not sqlCode.strip():
                 dialogTitle = "ERROR"
@@ -79,12 +74,20 @@ class GenerateSQLDialogController:
                 ErrorDialog.displayDialog()
                 return
 
-            executionResult = OracleDatabaseControl.executeSQLCode(sqlCode)
+            DatabaseControl = DatabaseControllersFactory.createController(connectionParams, DatabaseType)
+            executionResult = DatabaseControl.executeSQLCode(sqlCode)
 
             ExecutionSQLDialog = ExecutionSQLDialogView(self.__ParentWindow)
             ExecutionSQLDialog.setupUI(executionResult)
             ExecutionSQLControl = ExecutionSQLDialogController(ExecutionSQLDialog)
             ExecutionSQLDialog.displayDialog()
+
+    def __getSelectedDatabaseType(self):
+        return DatabasesEnum(self.__GenerateSQLDialogView.TabWidget.currentIndex() + 1)
+
+    def __getSelectedSQLCode(self):
+        currentEditor = self.__GenerateSQLDialogView.TabWidget.currentWidget()
+        return currentEditor.toPlainText()
 
     def __selectCancel(self):
         self.__GenerateSQLDialogView.reject()

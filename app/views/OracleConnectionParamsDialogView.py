@@ -1,9 +1,12 @@
+from typing import override
 from PySide6.QtCore import Qt, QRegularExpression
 from PySide6.QtWidgets import QDialog, QGridLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton
 from PySide6.QtGui import QRegularExpressionValidator
 
+from app.views.interfaces.ConnectionParamsDialogInterface import ConnectionParamsDialogInterface
 
-class OracleConnectionParamsDialogView(QDialog):
+
+class OracleConnectionParamsDialogView(QDialog, ConnectionParamsDialogInterface):
     def __init__(self, ParentWindow):
         super().__init__(ParentWindow)
         self.__usernameRegex = QRegularExpression(r'^[A-Za-z_][A-Za-z0-9_]+$')
@@ -12,6 +15,7 @@ class OracleConnectionParamsDialogView(QDialog):
         self.__portRegex = QRegularExpression(r'^(?:[1-9][0-9]{0,4}|6553[0-5]|[1-9][0-9]{0,3}|[0-9]{1,5})$')
         self.__serviceNameRegex = QRegularExpression(r'^[A-Za-z0-9._-]+$')
 
+    @override
     def setupUI(self):
         if not self.objectName():
             self.setObjectName(u"OracleConnectionParamsDialog")

@@ -5,8 +5,9 @@ from app.controllers.interfaces.DatabaseControllerInterface import DatabaseContr
 
 
 class OracleDatabaseController(DatabaseControllerInterface):
-    def __init__(self, username, password, host, port, serviceName):
-        self.__connectStr = f"{username}/{password}@{host}:{port}/{serviceName}"
+    def __init__(self, params):
+        self.__connectStr = \
+            f"{params["username"]}/{params["password"]}@{params["host"]}:{params["port"]}/{params["serviceName"]}"
 
     @override
     def executeSQLCode(self, sqlCode):
@@ -24,13 +25,16 @@ class OracleDatabaseController(DatabaseControllerInterface):
                         cursor.execute(statement)
                         messages.append(f"Executed:\n{statement}")
                     except oracledb.DatabaseError as e:
-                        error_message = str(e)
-                        messages.append(f"ERROR in statement:\n{statement}\n{error_message}")
+                        errorMessage = f"{type(e).__name__}: {e}"
+                        messages.append(f"ERROR in statement:\n{statement}\n{errorMessage}")
                 connection.commit()
                 messages.append("All changes committed.")
 
         except oracledb.Error as e:
             messages.append(f"Connection or general error:\n{str(e)}")
+
+        except Exception as e:
+            messages.append(f"An unexpected error occurred:\n{str(e)}")
 
         finally:
             if connection is not None:

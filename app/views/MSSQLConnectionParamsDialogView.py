@@ -1,17 +1,21 @@
+from typing import override
 from PySide6.QtCore import Qt, QRegularExpression
 from PySide6.QtWidgets import QDialog, QGridLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton
 from PySide6.QtGui import QRegularExpressionValidator
 
+from app.views.interfaces.ConnectionParamsDialogInterface import ConnectionParamsDialogInterface
 
-class MSSQLConnectionParamsDialogView(QDialog):
+
+class MSSQLConnectionParamsDialogView(QDialog, ConnectionParamsDialogInterface):
     def __init__(self, ParentWindow):
         super().__init__(ParentWindow)
         self.__usernameRegex = QRegularExpression(r'^[A-Za-z_][A-Za-z0-9_]*$')
         self.__passwordRegex = QRegularExpression(r'^[^\s/]+$')
-        self.__hostRegex = QRegularExpression(r'^[A-Za-z0-9.-]+$')
+        self.__serverRegex = QRegularExpression(r'^[A-Za-z0-9.-]+$')
         self.__portRegex = QRegularExpression(r'^(?:[1-9][0-9]{0,4}|6553[0-5]|[1-9][0-9]{0,3}|[0-9]{1,5})$')
         self.__databaseRegex = QRegularExpression(r'^[A-Za-z0-9_-]+$')
 
+    @override
     def setupUI(self):
         if not self.objectName():
             self.setObjectName(u"MSSQLConnectionParamsDialog")
@@ -48,14 +52,14 @@ class MSSQLConnectionParamsDialogView(QDialog):
         self.__gridLayout.addLayout(self.__horizontalLayout_2, 1, 0, 1, 1)
 
         self.__horizontalLayout_3 = QHBoxLayout()
-        self.__hostLabel = QLabel(u"Host", self)
-        self.__hostLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.hostLineEdit = QLineEdit(self)
-        hostValidator = QRegularExpressionValidator(self.__hostRegex, self.hostLineEdit)
-        self.hostLineEdit.setValidator(hostValidator)
-        self.hostLineEdit.setMaxLength(253)
-        self.__horizontalLayout_3.addWidget(self.__hostLabel)
-        self.__horizontalLayout_3.addWidget(self.hostLineEdit)
+        self.__serverLabel = QLabel(u"Host", self)
+        self.__serverLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.serverLineEdit = QLineEdit(self)
+        serverValidator = QRegularExpressionValidator(self.__serverRegex, self.serverLineEdit)
+        self.serverLineEdit.setValidator(serverValidator)
+        self.serverLineEdit.setMaxLength(253)
+        self.__horizontalLayout_3.addWidget(self.__serverLabel)
+        self.__horizontalLayout_3.addWidget(self.serverLineEdit)
         self.__horizontalLayout_3.setStretch(0, 3)
         self.__horizontalLayout_3.setStretch(1, 7)
         self.__gridLayout.addLayout(self.__horizontalLayout_3, 2, 0, 1, 1)
