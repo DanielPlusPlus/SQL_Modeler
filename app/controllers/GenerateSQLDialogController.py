@@ -12,9 +12,8 @@ from app.enums.DatabasesEnum import DatabasesEnum
 
 
 class GenerateSQLDialogController:
-    def __init__(self, ParentWindow, MainWindowController, GenerateSQLDialogView):
+    def __init__(self, ParentWindow, GenerateSQLDialogView):
         self.__ParentWindow = ParentWindow
-        self.__MainWindowController = MainWindowController
         self.__GenerateSQLDialogView = GenerateSQLDialogView
 
         self.__GenerateSQLDialogView.copyCodeButton.clicked.connect(self.__selectCopyCode)

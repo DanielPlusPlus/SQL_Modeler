@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import MagicMock, patch, mock_open
 from PySide6.QtWidgets import QApplication, QWidget
 
-from app.controllers.LoadSQLController import LoadSQLController
+from app.controllers.LoadOracleSQLController import LoadSQLController
 from app.enums.RelationshipsEnum import RelationshipsEnum
 
 app = QApplication.instance() or QApplication([])

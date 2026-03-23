@@ -53,15 +53,13 @@ class MainWindow(QMainWindow):
         self.__InheritancesModel = InheritancesModel()
 
         # views
-        self.__GenerateSQLController = GenerateSQLController(self, self.__MainWindowController, self.__TablesModel,
-                                                             self.__RelationshipsModel,
+        self.__GenerateSQLController = GenerateSQLController(self, self.__TablesModel, self.__RelationshipsModel,
                                                              self.__InheritancesModel)
-        self.__LoadSQLController = LoadSQLController(self, self.__MainWindowController, self.__TablesModel,
-                                                     self.__RelationshipsModel,
+        self.__LoadSQLController = LoadSQLController(self, self.__TablesModel, self.__RelationshipsModel,
                                                      self.__InheritancesModel)
-        self.__MenuBarController = MenuBarController(self.__MenuBarView, self.__MainWindowController,
-                                                     self.__DrawingAreaController, self.__LoadSQLController,
-                                                     self.__ExportDialogController, self.__GenerateSQLController)
+        self.__MenuBarController = MenuBarController(self.__MenuBarView, self.__DrawingAreaController,
+                                                     self.__LoadSQLController, self.__ExportDialogController,
+                                                     self.__GenerateSQLController)
         self.__ToolBarController = ToolBarController(self.__ToolBarView, self.__MenuBarController)
         self.__DrawingAreaView = DrawingAreaView(self.__DrawingAreaController, self.__DrawingAreaModel)
         self.__DrawingAreaView.setupUI()

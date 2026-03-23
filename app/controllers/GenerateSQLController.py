@@ -7,9 +7,8 @@ from app.controllers.GenerateSQLDialogController import GenerateSQLDialogControl
 
 
 class GenerateSQLController:
-    def __init__(self, ParentWindow, MainWindowController, TablesModel, RelationshipsModel, InheritancesModel):
+    def __init__(self, ParentWindow, TablesModel, RelationshipsModel, InheritancesModel):
         self.__ParentWindow = ParentWindow
-        self.__MainWindowController = MainWindowController
         self.__TablesModel = TablesModel
         self.__RelationshipsModel = RelationshipsModel
         self.__InheritancesModel = InheritancesModel
@@ -26,6 +25,5 @@ class GenerateSQLController:
 
         GenerateSQLDialog = GenerateSQLDialogView(self.__ParentWindow)
         GenerateSQLDialog.setupUI(oracleSQLCode, mySQLCode, msSQLCode, postgreSQLCode)
-        GenerateSQLControl = GenerateSQLDialogController(self.__ParentWindow, self.__MainWindowController,
-                                                         GenerateSQLDialog)
+        GenerateSQLControl = GenerateSQLDialogController(self.__ParentWindow, GenerateSQLDialog)
         GenerateSQLDialog.displayDialog()

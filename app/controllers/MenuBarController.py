@@ -1,10 +1,10 @@
+from app.enums.DatabasesEnum import DatabasesEnum
 from app.enums.ConnectionsStatusEnum import ConnectionsStatusEnum
 
 
 class MenuBarController:
-    def __init__(self, MenuBarView, MainWindowController, DrawingAreaController, LoadSQLController,
+    def __init__(self, MenuBarView, DrawingAreaController, LoadSQLController,
                  ExportDiagramController, GenerateSQLController):
-        self.__MainWindowController = MainWindowController
         self.__DrawingAreaController = DrawingAreaController
         self.__LoadSQLController = LoadSQLController
         self.__ExportDiagramController = ExportDiagramController
@@ -14,10 +14,10 @@ class MenuBarController:
         self.__is_1_n_RelSelected = ConnectionsStatusEnum.NOT_IN_MOTION
         self.__is_n_n_RelSelected = ConnectionsStatusEnum.NOT_IN_MOTION
         self.__isInheritanceSelected = ConnectionsStatusEnum.NOT_IN_MOTION
-        MenuBarView.actionImportOracleSQL.triggered.connect(self.__selectImportSQL)
-        MenuBarView.actionImportMySQL.triggered.connect(self.__selectImportSQL)
-        MenuBarView.actionImportMSSSQL.triggered.connect(self.__selectImportSQL)
-        MenuBarView.actionImportPostgreSQL.triggered.connect(self.__selectImportSQL)
+        MenuBarView.actionImportOracleSQL.triggered.connect(self.__selectImportOracleSQL)
+        MenuBarView.actionImportMySQL.triggered.connect(self.__selectImportMySQL)
+        MenuBarView.actionImportMSSSQL.triggered.connect(self.__selectImportMSSQL)
+        MenuBarView.actionImportPostgreSQL.triggered.connect(self.__selectImportPostgreSQL)
         MenuBarView.actionExportDiagram.triggered.connect(self.selectExportDiagramTool)
         MenuBarView.actionGenerateSQL.triggered.connect(self.selectGenerateSQLTool)
         MenuBarView.actionQuit.triggered.connect(self.__selectQuit)
@@ -30,8 +30,17 @@ class MenuBarController:
         MenuBarView.actionCreate_n_n_Rel.triggered.connect(self.selectCreate_n_n_RelTool)
         MenuBarView.actionCreateInheritance.triggered.connect(self.selectCreateInheritanceTool)
 
-    def __selectImportSQL(self):
-        self.__LoadSQLController.openFileDialogAndProcessSQL()
+    def __selectImportOracleSQL(self):
+        self.__LoadSQLController.openFileDialogAndProcessSQL(DatabasesEnum.ORACLE)
+
+    def __selectImportMySQL(self):
+        self.__LoadSQLController.openFileDialogAndProcessSQL(DatabasesEnum.MYSQL)
+
+    def __selectImportMSSQL(self):
+        self.__LoadSQLController.openFileDialogAndProcessSQL(DatabasesEnum.MSSQL)
+
+    def __selectImportPostgreSQL(self):
+        self.__LoadSQLController.openFileDialogAndProcessSQL(DatabasesEnum.POSTGRESQL)
 
     def selectExportDiagramTool(self):
         self.__unselectAllTools()
