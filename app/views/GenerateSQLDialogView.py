@@ -8,7 +8,7 @@ class GenerateSQLDialogView(QDialog):
     def __init__(self, ParentWindow):
         super().__init__(ParentWindow)
 
-    def setupUI(self, SQLCode):
+    def setupUI(self, oracleSQLCode, mySQLCode, msSQLCode, postgreSQLCode):
         self.setObjectName("GenerateSQLDialog")
         self.resize(600, 400)
         self.setWindowTitle("Generate SQL Code")
@@ -22,7 +22,7 @@ class GenerateSQLDialogView(QDialog):
         self.__gridLayout.addLayout(self.__horizontalLayout, 0, 0, 1, 1)
 
         self.__horizontalLayout_2 = QHBoxLayout()
-        self.TabWidget = TabWidget(SQLCode, self)
+        self.TabWidget = TabWidget(oracleSQLCode, mySQLCode, msSQLCode, postgreSQLCode, self)
 
         self.__horizontalLayout_2.addWidget(self.TabWidget)
         self.__gridLayout.addLayout(self.__horizontalLayout_2, 1, 0, 1, 1)
