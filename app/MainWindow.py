@@ -59,7 +59,8 @@ class MainWindow(QMainWindow):
                                                              self.__InheritancesModel)
         self.__LoadSQLController = LoadSQLController(self, self.__TablesModel, self.__RelationshipsModel,
                                                      self.__InheritancesModel)
-        self.__MenuBarController = MenuBarController(self.__MenuBarView, self.__ThemesController, self.__DrawingAreaController,
+        self.__MenuBarController = MenuBarController(self.__MainWindowController, self.__MenuBarView,
+                                                     self.__ThemesController, self.__DrawingAreaController,
                                                      self.__LoadSQLController, self.__ExportDialogController,
                                                      self.__GenerateSQLController)
         self.__ToolBarController = ToolBarController(self.__ToolBarView, self.__MenuBarController)
@@ -90,5 +91,4 @@ class MainWindow(QMainWindow):
 
     @override
     def closeEvent(self, event):
-        self.__MainWindowController.closeWindow()
-        event.ignore()
+        self.__MainWindowController.closeWindow(event)

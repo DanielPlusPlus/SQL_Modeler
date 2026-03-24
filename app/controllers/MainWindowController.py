@@ -23,12 +23,13 @@ class MainWindowController:
     def __getCloseWithoutConfirmationStatus(self):
         return self.__allowCloseWithoutConfirmation
 
-    def closeWindow(self):
-        if self.__getCloseWithoutConfirmationStatus():
-            self.__MainWindow.close()
-        else:
+    def tryCloseWindow(self):
+        self.__MainWindow.close()
+
+    def closeWindow(self, event):
+        if not self.__getCloseWithoutConfirmationStatus():
             dialogTitle = "WARNING"
             dialogText = "Are you sure about exiting without saving?"
             ConfirmationDialog = ConfirmationDialogView(self.__MainWindow, dialogTitle, dialogText)
-            if ConfirmationDialog.displayDialog():
-                self.__MainWindow.close()
+            if not ConfirmationDialog.displayDialog():
+                event.ignore()

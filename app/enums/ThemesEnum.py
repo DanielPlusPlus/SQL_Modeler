@@ -2,5 +2,8 @@ from enum import Enum
 
 
 class ThemesEnum(Enum):
-    LIGHT = 1
-    DARK = 2
+    DEFAULT = 1
+    AURORA = 2
+    DARCULA = 3
+    SAKURA = 4
+    NEON = 5

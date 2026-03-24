@@ -11,6 +11,7 @@ class MenuBarView(QMenuBar):
         self.__menuFile = QMenu(u"File", self)
         self.__menuImportSQL = QMenu(u"Import SQL File", self)
         self.__menuView = QMenu(u"View", self)
+        self.__menuThemes = QMenu(u"Themes", self)
         self.__menuTables = QMenu(u"Tables", self)
         self.__menuConnections = QMenu(u"Connections", self)
         self.__menuRelationships = QMenu(u"Relationships", self)
@@ -28,6 +29,12 @@ class MenuBarView(QMenuBar):
         self.actionZoomIn = QAction(u"Zoom In", self)
         self.actionZoomOut = QAction(u"Zoom Out", self)
         self.actionResetZoom = QAction(u"Reset Zoom", self)
+
+        self.actionDefaultTheme = QAction(u"Default", self)
+        self.actionAuroraTheme = QAction(u"Aurora", self)
+        self.actionDarculaTheme = QAction(u"Darcula", self)
+        self.actionSakuraTheme = QAction(u"Sakura", self)
+        self.actionNeonTheme = QAction(u"Neon", self)
 
         self.actionCreateTable = QAction(QIcon("app\\icons\\table.png"), u"Create Table", self)
 
@@ -50,6 +57,12 @@ class MenuBarView(QMenuBar):
         self.__menuView.addAction(self.actionZoomIn)
         self.__menuView.addAction(self.actionZoomOut)
         self.__menuView.addAction(self.actionResetZoom)
+        self.__menuView.addMenu(self.__menuThemes)
+        self.__menuThemes.addAction(self.actionDefaultTheme)
+        self.__menuThemes.addAction(self.actionAuroraTheme)
+        self.__menuThemes.addAction(self.actionDarculaTheme)
+        self.__menuThemes.addAction(self.actionSakuraTheme)
+        self.__menuThemes.addAction(self.actionNeonTheme)
 
         self.__menuTables.addAction(self.actionCreateTable)
 

@@ -1,10 +1,12 @@
+from app.enums.ThemesEnum import ThemesEnum
 from app.enums.DatabasesEnum import DatabasesEnum
 from app.enums.ConnectionsStatusEnum import ConnectionsStatusEnum
 
 
 class MenuBarController:
-    def __init__(self, MenuBarView, ThemesController, DrawingAreaController, LoadSQLController,
+    def __init__(self, MainWindowController, MenuBarView, ThemesController, DrawingAreaController, LoadSQLController,
                  ExportDiagramController, GenerateSQLController):
+        self.__MainWindowController = MainWindowController
         self.__ThemesController = ThemesController
         self.__DrawingAreaController = DrawingAreaController
         self.__LoadSQLController = LoadSQLController
@@ -25,6 +27,11 @@ class MenuBarController:
         MenuBarView.actionZoomIn.triggered.connect(self.__selectZoomIn)
         MenuBarView.actionZoomOut.triggered.connect(self.__selectZoomOut)
         MenuBarView.actionResetZoom.triggered.connect(self.__selectResetZoom)
+        MenuBarView.actionDefaultTheme.triggered.connect(self.__selectDefaultTheme)
+        MenuBarView.actionAuroraTheme.triggered.connect(self.__selectAuroraTheme)
+        MenuBarView.actionDarculaTheme.triggered.connect(self.__selectDarculaTheme)
+        MenuBarView.actionSakuraTheme.triggered.connect(self.__selectSakuraTheme)
+        MenuBarView.actionNeonTheme.triggered.connect(self.__selectNeonTheme)
         MenuBarView.actionCreateTable.triggered.connect(self.selectCreateTableTool)
         MenuBarView.actionCreate_1_1_Rel.triggered.connect(self.selectCreate_1_1_RelTool)
         MenuBarView.actionCreate_1_n_Rel.triggered.connect(self.selectCreate_1_n_RelTool)
@@ -56,7 +63,7 @@ class MenuBarController:
         self.__GenerateSQLController.displayDialog()
 
     def __selectQuit(self):
-        self.__MainWindowController.closeWindow()
+        self.__MainWindowController.tryCloseWindow()
 
     def __selectZoomIn(self):
         self.__DrawingAreaController.changeScaleFactor(True)
@@ -66,6 +73,21 @@ class MenuBarController:
 
     def __selectResetZoom(self):
         self.__DrawingAreaController.resetScaleFactor()
+
+    def __selectDefaultTheme(self):
+        self.__ThemesController.changeTheme(ThemesEnum.DEFAULT)
+
+    def __selectAuroraTheme(self):
+        self.__ThemesController.changeTheme(ThemesEnum.AURORA)
+
+    def __selectDarculaTheme(self):
+        self.__ThemesController.changeTheme(ThemesEnum.DARCULA)
+
+    def __selectSakuraTheme(self):
+        self.__ThemesController.changeTheme(ThemesEnum.SAKURA)
+
+    def __selectNeonTheme(self):
+        self.__ThemesController.changeTheme(ThemesEnum.NEON)
 
     def selectCreateTableTool(self):
         self.__unselectAllTools()
