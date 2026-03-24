@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt, QRect
-from PySide6.QtGui import QColor, QPainter, QTextFormat, QFont
+from PySide6.QtGui import QColor, QPainter, QTextFormat, QFont,  QPalette
 from PySide6.QtWidgets import QPlainTextEdit, QTextEdit
 from typing import override
 
@@ -46,19 +46,41 @@ class CodeEditor(QPlainTextEdit):
 
     def line_number_area_paint_event(self, event):
         painter = QPainter(self.__line_number_area)
-        painter.fillRect(event.rect(), QColor(240, 240, 240))
+
+        pal: QPalette = self.__line_number_area.palette()
+        line_area_bg = pal.color(QPalette.Window)
+        painter.fillRect(event.rect(), line_area_bg)
+
+        text_color = self.palette().color(QPalette.Text)
 
         block = self.firstVisibleBlock()
         block_number = block.blockNumber()
         top = int(self.blockBoundingGeometry(block).translated(self.contentOffset()).top())
         bottom = top + int(self.blockBoundingRect(block).height())
 
+        current_line = self.textCursor().blockNumber()
+
         while block.isValid() and top <= event.rect().bottom():
             if block.isVisible() and bottom >= event.rect().top():
                 number = str(block_number + 1)
-                painter.setPen(Qt.gray)
-                painter.drawText(0, top, self.__line_number_area.width() - 5, self.fontMetrics().height(),
-                                 Qt.AlignRight, number)
+
+                # Bieżąca linia – jaśniejszy kolor (bliżej koloru tekstu)
+                if block_number == current_line:
+                    painter.setPen(text_color)
+                else:
+                    # Trochę przygaszony (np. 70% jasności tekstu)
+                    normal_line_color = QColor(text_color)
+                    normal_line_color.setAlpha(180)
+                    painter.setPen(normal_line_color)
+
+                painter.drawText(
+                    0,
+                    top,
+                    self.__line_number_area.width() - 5,
+                    self.fontMetrics().height(),
+                    Qt.AlignRight,
+                    number,
+                )
 
             block = block.next()
             top = bottom
@@ -69,7 +91,13 @@ class CodeEditor(QPlainTextEdit):
         extra_selections = []
         if not self.isReadOnly():
             selection = QTextEdit.ExtraSelection()
-            line_color = QColor(232, 242, 254)
+
+            pal = self.palette()
+            base_color = pal.color(QPalette.Base)
+
+            # lekko zmodyfikowane tło pod bieżącą linię (np. trochę jaśniejsze)
+            line_color = base_color.lighter(120)
+
             selection.format.setBackground(line_color)
             selection.format.setProperty(QTextFormat.FullWidthSelection, True)
             selection.cursor = self.textCursor()

@@ -3,8 +3,9 @@ from app.enums.ConnectionsStatusEnum import ConnectionsStatusEnum
 
 
 class MenuBarController:
-    def __init__(self, MenuBarView, DrawingAreaController, LoadSQLController,
+    def __init__(self, MenuBarView, ThemesController, DrawingAreaController, LoadSQLController,
                  ExportDiagramController, GenerateSQLController):
+        self.__ThemesController = ThemesController
         self.__DrawingAreaController = DrawingAreaController
         self.__LoadSQLController = LoadSQLController
         self.__ExportDiagramController = ExportDiagramController

@@ -195,11 +195,14 @@ class DrawingAreaController:
         self.__InheritancesController.selectDrawInheritances()
         self.__TablesController.selectDrawTables()
         if self.__MenuBarController.getCreateTableToolStatus():
-            self.__TablesController.selectDrawTempTable(self.__cursorPosition, self.__DrawingAreaModel.getScaleFactor())
+            self.__TablesController.selectDrawTempTable(self.__cursorPosition,
+                                                        self.__DrawingAreaModel.getScaleFactor())
         elif self.__RelationshipsController.getRelationshipBeingDrawnStatus():
-            self.__RelationshipsController.selectDrawRelationshipBeingDrawn(self.__cursorPosition, self.__DrawingAreaModel.getScaleFactor())
+            self.__RelationshipsController.selectDrawRelationshipBeingDrawn(self.__cursorPosition,
+                                                                            self.__DrawingAreaModel.getScaleFactor())
         elif self.__InheritancesController.getInheritanceBeingDrawnStatus():
-            self.__InheritancesController.selectDrawInheritanceBeingDrawn(self.__cursorPosition, self.__DrawingAreaModel.getScaleFactor())
+            self.__InheritancesController.selectDrawInheritanceBeingDrawn(self.__cursorPosition,
+                                                                          self.__DrawingAreaModel.getScaleFactor())
 
     def __updateDrawingAreaSize(self):
         extremeTableDimensions = self.__TablesController.getExtremeTableDimensions()

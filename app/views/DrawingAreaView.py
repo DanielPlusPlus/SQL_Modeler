@@ -17,7 +17,6 @@ class DrawingAreaView(QWidget):
     def setupUI(self):
         self.setObjectName(u"DrawingArea")
         self.setAttribute(Qt.WA_StyledBackground, True)
-        self.setStyleSheet("background-color: #E6E6E6;")
 
     @override
     def mouseMoveEvent(self, event):

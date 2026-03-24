@@ -17,7 +17,7 @@ class EditTableDialogView(QDialog):
     def setupUi(self):
         if not self.objectName():
             self.setObjectName(u"EditTableDialog")
-        self.resize(740, 400)
+        self.resize(780, 400)
         self.setWindowTitle(u"Edit Table")
 
         self.__gridLayout = QGridLayout(self)
@@ -91,8 +91,11 @@ class EditTableDialogView(QDialog):
         self.tableView.setItemDelegateForColumn(1, DataTypesComboDelegate)
         self.tableView.setItemDelegateForColumn(2, LengthSpinBoxDelegate)
         header = self.tableView.horizontalHeader()
-        header.setDefaultAlignment(Qt.AlignLeft)
+        header.setDefaultAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         header.setSectionResizeMode(QHeaderView.Stretch)
+        header = self.tableView.verticalHeader()
+        header.setDefaultAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+
 
         self.__horizontalLayout_7.addWidget(self.tableView)
         self.__gridLayout.addLayout(self.__horizontalLayout_7, 2, 0, 1, 3)

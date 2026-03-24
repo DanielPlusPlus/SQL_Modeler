@@ -9,6 +9,7 @@ from app.views.TablesView import TablesView
 from app.views.RelationshipsView import RelationshipsView
 from app.views.InheritancesView import InheritancesView
 from app.controllers.MainWindowController import MainWindowController
+from app.controllers.ThemesController import ThemesController
 from app.controllers.MenuBarController import MenuBarController
 from app.controllers.ToolBarController import ToolBarController
 from app.controllers.DrawingAreaController import DrawingAreaController
@@ -27,7 +28,7 @@ from typing import override
 
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, app):
         super().__init__()
 
         # views
@@ -43,6 +44,7 @@ class MainWindow(QMainWindow):
         # controllers
         self.__ScrollAreaView = ScrollAreaView(self)
         self.__MainWindowController = MainWindowController(self, self.__MainWindowView)
+        self.__ThemesController = ThemesController(app)
         self.__ExportDialogController = ExportDiagramController(self, self.__ScrollAreaView)
         self.__DrawingAreaController = DrawingAreaController()
 
@@ -57,7 +59,7 @@ class MainWindow(QMainWindow):
                                                              self.__InheritancesModel)
         self.__LoadSQLController = LoadSQLController(self, self.__TablesModel, self.__RelationshipsModel,
                                                      self.__InheritancesModel)
-        self.__MenuBarController = MenuBarController(self.__MenuBarView, self.__DrawingAreaController,
+        self.__MenuBarController = MenuBarController(self.__MenuBarView, self.__ThemesController, self.__DrawingAreaController,
                                                      self.__LoadSQLController, self.__ExportDialogController,
                                                      self.__GenerateSQLController)
         self.__ToolBarController = ToolBarController(self.__ToolBarView, self.__MenuBarController)
